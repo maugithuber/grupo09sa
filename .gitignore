@@ -1,7 +1,7 @@
 # Archivo main.java de donde solo se va a activar el software
 # Y llamar a los servicios e hilos :-)
 # Se va a descomentar para el despiegue
-src/correos/acropolis/main.java
+#src/correos/acropolis/main.java
 # Database Secrets
 src/correos/acropolis/utils/Database.java
 
