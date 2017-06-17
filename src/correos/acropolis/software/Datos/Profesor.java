@@ -1,4 +1,4 @@
-package correos.acropolis.software;
+package correos.acropolis.software.Datos;
 
 import java.sql.Date;
 import javax.swing.table.DefaultTableModel;
@@ -6,20 +6,19 @@ import javax.swing.table.DefaultTableModel;
 /**
  * @author mauriballes
  * @version 1.0
- * @created 15-Jun-2017 9:04:43 PM
+ * @created 15-Jun-2017 9:04:50 PM
  */
-public class Alumno {
+public class Profesor {
 
     private int id;
     private String nombres;
     private String apellidos;
     private int telefono;
-    private Date fecha_nacimiento;
-    private Date fecha_ingreso;
+    private Date fecha_postulacion;
     private boolean estado;
     public Conexion m_Conexion;
 
-    public Alumno() {
+    public Profesor() {
 
     }
 
@@ -32,11 +31,10 @@ public class Alumno {
      * @param nombres
      * @param apellidos
      * @param telefono
-     * @param fecha_nacimiento
-     * @param fecha_ingreso
+     * @param fecha_postulacion
      * @param estado
      */
-    public void setAlumno(String nombres, String apellidos, int telefono, Date fecha_nacimiento, Date fecha_ingreso, boolean estado) {
+    public void setProfesor(String nombres, String apellidos, int telefono, Date fecha_postulacion, boolean estado) {
 
     }
 
@@ -46,11 +44,10 @@ public class Alumno {
      * @param nombres
      * @param apellidos
      * @param telefono
-     * @param fecha_nacimiento
-     * @param fecha_ingreso
+     * @param fecha_postulacion
      * @param estado
      */
-    public void setAlumno(int id, String nombres, String apellidos, int telefono, Date fecha_nacimiento, Date fecha_ingreso, boolean estado) {
+    public void setProfesor(int id, String nombres, String apellidos, int telefono, Date fecha_postulacion, boolean estado) {
 
     }
 
@@ -58,19 +55,19 @@ public class Alumno {
      *
      * @param id
      */
-    public DefaultTableModel getAlumno(int id) {
+    public DefaultTableModel getProfesor(int id) {
         return null;
     }
 
-    public DefaultTableModel getAlumnos() {
+    public DefaultTableModel getProfesores() {
         return null;
     }
 
-    public int registrarAlumno() {
+    public int registrarProfesor() {
         return 0;
     }
 
-    public void modificarAlumno() {
+    public void modificarProfesor() {
 
     }
 

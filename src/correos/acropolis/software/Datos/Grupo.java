@@ -1,4 +1,4 @@
-package correos.acropolis.software;
+package correos.acropolis.software.Datos;
 
 import javax.swing.table.DefaultTableModel;
 

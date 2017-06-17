@@ -1,5 +1,7 @@
-package correos.acropolis.software;
+package correos.acropolis.software.Negocio;
 
+import correos.acropolis.software.Datos.Asistencia;
+import correos.acropolis.software.Datos.Kardex;
 import java.sql.Date;
 import javax.swing.table.DefaultTableModel;
 
