@@ -1,6 +1,11 @@
 package correos.acropolis.software.Datos;
 
+import correos.acropolis.utils.Database;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author mauriballes
@@ -9,34 +14,46 @@ import java.sql.Connection;
  */
 public class Conexion {
 
-    private Connection connection;
+    private Connection connection = null;
     private String host;
     private String user;
     private String password;
-    public Conexion m_Conexion;
+    private static Conexion m_Conexion = null;
 
-    public Conexion() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+    private Conexion() {
+        this.host = Database.DB_HOST;
+        this.user = Database.DB_USER;
+        this.password = Database.DB_PASSWORD;
     }
 
     public static Conexion getInstancia() {
-        return null;
+        if (m_Conexion == null) {
+            m_Conexion = new Conexion();
+        }
+        return m_Conexion;
     }
 
     public Connection getConexion() {
-        return null;
+        return this.connection;
     }
 
     public void abrirConexion() {
-
+        String db = Database.DB_NAME;
+        String url_db = "jdbc:postgresql://" + this.host + ":5432/" + db;
+        try {
+            Class.forName("org.postgresql.Driver");
+            this.connection = DriverManager.getConnection(url_db, this.user, this.password);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void cerrarConexion() {
-
+        try {
+            this.connection.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
 }

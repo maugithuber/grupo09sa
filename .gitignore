@@ -2,6 +2,8 @@
 # Y llamar a los servicios e hilos :-)
 # Se va a descomentar para el despiegue
 src/correos/acropolis/main.java
+# Database Secrets
+src/correos/acropolis/utils/Database.java
 
 # Created by https://www.gitignore.io/api/java,linux,netbeans
 
