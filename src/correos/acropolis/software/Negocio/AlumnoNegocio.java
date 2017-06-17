@@ -14,23 +14,20 @@ public class AlumnoNegocio {
     public Alumno m_Alumno;
 
     public AlumnoNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Alumno = new Alumno();
     }
 
     /**
      *
      * @param id
+     * @return 
      */
     public DefaultTableModel obtenerAlumno(int id) {
-        return null;
+        return this.m_Alumno.getAlumno(id);
     }
 
     public DefaultTableModel obtenerAlumnos() {
-        return null;
+        return this.m_Alumno.getAlumnos();
     }
 
     /**
@@ -41,9 +38,12 @@ public class AlumnoNegocio {
      * @param fecha_nacimiento
      * @param fecha_ingreso
      * @param estado
+     * @return 
      */
     public int registrarAlumno(String nombres, String apellidos, int telefono, Date fecha_nacimiento, Date fecha_ingreso, boolean estado) {
-        return 0;
+        // No olvidar primero settear los datos
+        this.m_Alumno.setAlumno(nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
+        return this.m_Alumno.registrarAlumno();
     }
 
     /**
@@ -57,7 +57,9 @@ public class AlumnoNegocio {
      * @param estado
      */
     public void modificarAlumno(int id, String nombres, String apellidos, int telefono, Date fecha_nacimiento, Date fecha_ingreso, boolean estado) {
-
+        // No olvidar primero settear los datos
+        this.m_Alumno.setAlumno(id, nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
+        this.m_Alumno.modificarAlumno();
     }
 
 }
