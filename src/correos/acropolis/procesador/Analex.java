@@ -79,8 +79,13 @@ public class Analex {
                     break;
                 case 4:
                     Token token = TPC.estaEnTPC(AC);
-                    R = token;
-                    return;
+                    if (token != null) {
+                        R = token;
+                        return;
+                    } else {
+                        Estado = 2;
+                    }
+                    break;
                 case 5:
                     if (c != Cinta.EOF && c != Cinta.EOLN && c != "\"".charAt(0)) {
                         AC += String.valueOf(c);
