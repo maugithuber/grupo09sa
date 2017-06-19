@@ -35,7 +35,7 @@ public class Utils {
         int index = -1;
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].length() > 5
-                    && lines[i].substring(0, 5).equals("From:")) {
+                    && lines[i].substring(0, 5).toUpperCase().equals("FROM:")) {
                 index = i;
                 break;
             }
@@ -61,7 +61,7 @@ public class Utils {
         int index = -1;
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].length() > 8
-                    && lines[i].substring(0, 8).equals("Subject:")) {
+                    && lines[i].substring(0, 8).toUpperCase().equals("SUBJECT:")) {
                 index = i;
                 break;
             }
