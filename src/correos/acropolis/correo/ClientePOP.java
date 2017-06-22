@@ -53,11 +53,11 @@ public class ClientePOP {
                     command = "RETR 1\n";
                     writer.writeBytes(command);
                     result = getMultiline(reader);
-                    
+
                     // Eliminar mensaje despues de leer
-                    // command = "DELE 1\n";
-                    // writer.writeBytes(command);
-                    // reader.readLine();
+                    command = "DELE 1\n";
+                    writer.writeBytes(command);
+                    reader.readLine();
                 }
 
                 command = "QUIT\r\n";

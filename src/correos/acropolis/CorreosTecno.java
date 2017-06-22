@@ -5,6 +5,11 @@
  */
 package correos.acropolis;
 
+import correos.acropolis.correo.ClientePOP;
+import correos.acropolis.software.NuevaAcropolisMail;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mauriballes
@@ -14,10 +19,54 @@ public class CorreosTecno extends javax.swing.JFrame {
     /**
      * Creates new form CorreosTecno
      */
+    // Hilo
+    HiloCorreo myThread;
+
     public CorreosTecno() {
         initComponents();
         this.setTitle("Correos Tecno");
         this.setLocationRelativeTo(null);
+        btnCancelar.setEnabled(false);
+    }
+
+    public class HiloCorreo extends Thread {
+
+        public volatile boolean estado = true;
+
+        @Override
+        public void run() {
+            System.out.println("Iniciar Escucha!!!");
+            while (estado) {
+                // Preguntar si hay mail
+                String content = ClientePOP.readMail();
+                if (content != null) {
+                    System.out.println(content);
+                    HiloAtencion atender = new HiloAtencion();
+                    atender.mensaje = content;
+                    atender.start();
+                }
+                waitCiclo();
+            }
+            System.out.println("Terminar Escucha!!!");
+        }
+
+        public void waitCiclo() {
+            try {
+                sleep(2000); // Esperar 2 seg.
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CorreosTecno.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public class HiloAtencion extends Thread {
+
+        public volatile String mensaje;
+
+        @Override
+        public void run() {
+            new NuevaAcropolisMail().processMessage(mensaje);
+        }
     }
 
     /**
@@ -73,11 +122,17 @@ public class CorreosTecno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        System.out.println("Iniciar");
+        myThread = new HiloCorreo();
+        myThread.start();
+        btnCancelar.setEnabled(true);
+        btnIniciar.setEnabled(false);
+
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        System.out.println("Finalizar");
+        myThread.estado = false;
+        btnCancelar.setEnabled(false);
+        btnIniciar.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
