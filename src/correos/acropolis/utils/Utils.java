@@ -5,9 +5,15 @@
  */
 package correos.acropolis.utils;
 
+import correos.acropolis.presentador.Block;
+import correos.acropolis.presentador.Board;
+import correos.acropolis.presentador.Table;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -71,5 +77,35 @@ public class Utils {
             orden = lines[index].substring(8);
         }
         return orden;
+    }
+
+    public static String dibujarTabla(DefaultTableModel tabla) {
+        String tableString = "";
+        ArrayList<String> headers = new ArrayList<>();
+        ArrayList<List<String>> rowList = new ArrayList<>();
+
+        // Agregando Los Headers
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            headers.add(tabla.getColumnName(i));
+        }
+
+        // Agregando Content
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            ArrayList<String> row = new ArrayList<>();
+            for (int j = 0; j < tabla.getColumnCount(); j++) {
+                row.add(String.valueOf(tabla.getValueAt(i, j)));
+            }
+            rowList.add(row.subList(0, row.size()));
+        }
+
+        // Creando Tabla para mostrar
+        Board board = new Board(125);
+        Table table = new Table(board, 125, headers, rowList);
+        Block tableBlock = table.tableToBlocks();
+        board.setInitialBlock(tableBlock);
+        board.build();
+        tableString = board.getPreview();
+
+        return tableString;
     }
 }
