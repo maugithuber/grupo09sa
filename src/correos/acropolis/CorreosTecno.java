@@ -42,9 +42,7 @@ public class CorreosTecno extends javax.swing.JFrame {
                 String content = ClientePOP.readMail();
                 if (content != null) {
                     System.out.println("Llego Correo!!!");
-                    HiloAtencion atender = new HiloAtencion();
-                    atender.mensaje = content;
-                    atender.start();
+                    new HiloAtencion(content).start();
                 }
                 waitCiclo();
             }
@@ -63,6 +61,10 @@ public class CorreosTecno extends javax.swing.JFrame {
     public class HiloAtencion extends Thread {
 
         public volatile String mensaje;
+
+        public HiloAtencion(String mensaje) {
+            this.mensaje = mensaje;
+        }
 
         @Override
         public void run() {

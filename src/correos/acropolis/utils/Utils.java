@@ -112,4 +112,9 @@ public class Utils {
 
         return tableString;
     }
+
+    public static String quitarComillas(String texto) {
+        int len = texto.length() - 1;
+        return texto.substring(1, len);
+    }
 }
