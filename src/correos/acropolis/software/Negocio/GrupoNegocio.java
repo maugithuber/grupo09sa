@@ -15,40 +15,41 @@ public class GrupoNegocio {
     public Horario m_Horario;
 
     public GrupoNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Grupo = new Grupo();
+        this.m_Horario = new Horario();
     }
 
     /**
      *
      * @param id
+     * @return
      */
     public DefaultTableModel obtenerGrupo(int id) {
-        return null;
+        return this.m_Grupo.getGrupo(id);
     }
 
     public DefaultTableModel obtenerGrupos() {
-        return null;
+        return this.m_Grupo.getGrupos();
     }
 
     /**
      *
      * @param id_grupo
+     * @return
      */
     public DefaultTableModel obtenerHorarios(int id_grupo) {
-        return null;
+        return this.m_Horario.getHorarios(id_grupo);
     }
 
     /**
      *
      * @param nombre
      * @param id_curso
+     * @return
      */
     public int registrarGrupo(String nombre, int id_curso) {
-        return 0;
+        this.m_Grupo.setGrupo(nombre, id_curso);
+        return this.m_Grupo.registrarGrupo();
     }
 
     /**
@@ -58,7 +59,8 @@ public class GrupoNegocio {
      * @param id_curso
      */
     public void modificarGrupo(int id, String nombre, int id_curso) {
-
+        this.m_Grupo.setGrupo(id, nombre, id_curso);
+        this.m_Grupo.modificarGrupo();
     }
 
     /**
@@ -68,9 +70,11 @@ public class GrupoNegocio {
      * @param hora_inicio
      * @param hora_fin
      * @param id_aula
+     * @return
      */
     public int registrarHorario(int id_grupo, String dia, String hora_inicio, String hora_fin, int id_aula) {
-        return 0;
+        this.m_Horario.setHorario(id_grupo, dia, hora_inicio, hora_fin, id_aula);
+        return this.m_Horario.registrarHorario();
     }
 
     /**
@@ -83,7 +87,8 @@ public class GrupoNegocio {
      * @param id_aula
      */
     public void modificarHorario(int id_grupo, int id, String dia, String hora_inicio, String hora_fin, int id_aula) {
-
+        this.m_Horario.setHorario(id_grupo, id, dia, hora_inicio, hora_fin, id_aula);
+        this.m_Horario.modificarHorario();
     }
 
     /**
@@ -92,7 +97,7 @@ public class GrupoNegocio {
      * @param id_grupo
      */
     public void eliminarHorario(int id, int id_grupo) {
-
+        this.m_Horario.eliminarHorario(id, id_grupo);
     }
 
     /**
@@ -101,7 +106,7 @@ public class GrupoNegocio {
      * @param id_profesor
      */
     public void asignarGrupo(int id_grupo, int id_profesor) {
-
+        this.m_Grupo.asignarGrupo(id_grupo, id_profesor);
     }
 
 }

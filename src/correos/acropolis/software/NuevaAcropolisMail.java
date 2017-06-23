@@ -12,6 +12,7 @@ import correos.acropolis.procesador.Parser;
 import correos.acropolis.procesador.Token;
 import correos.acropolis.software.Negocio.AlumnoNegocio;
 import correos.acropolis.software.Negocio.CursoNegocio;
+import correos.acropolis.software.Negocio.GrupoNegocio;
 import correos.acropolis.software.Negocio.ProfesorNegocio;
 import correos.acropolis.utils.Helper;
 import correos.acropolis.utils.Utils;
@@ -598,9 +599,14 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERGRUPOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        String message = Utils.dibujarTabla(grupoNegocio.obtenerGrupos());
+        ClienteSMTP.sendMail(correoDest, "Obtener Grupos", message);
     }
 
     public void obtenerHorarios(Analex analex, String correoDest) {
@@ -612,9 +618,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERHORARIOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(grupoNegocio.obtenerHorarios(id_grupo));
+        ClienteSMTP.sendMail(correoDest, "Obtener Horarios", message);
     }
 
     public void registrarGrupo(Analex analex, String correoDest) {
@@ -626,9 +639,20 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARGRUPO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        // Atributos
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_curso = analex.Preanalisis().getAtributo();
+        grupoNegocio.registrarGrupo(nombre, id_curso);
+        ClienteSMTP.sendMail(correoDest, "Registrar Grupo", "Registro realizado Correctamente");
     }
 
     public void modificarGrupo(Analex analex, String correoDest) {
@@ -640,9 +664,29 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARGRUPO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel grupo = grupoNegocio.obtenerGrupo(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombre = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(grupo.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_curso = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(grupo.getValueAt(0, 2)));
+        grupoNegocio.modificarGrupo(id, nombre, id_curso);
+        ClienteSMTP.sendMail(correoDest, "Modificar Grupo", "Modificacion realizada Correctamente");
     }
 
     public void asignarGrupo(Analex analex, String correoDest) {
@@ -654,9 +698,19 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_ASIGNARGRUPO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_profesor = analex.Preanalisis().getAtributo();
+        grupoNegocio.asignarGrupo(id_grupo, id_profesor);
+        ClienteSMTP.sendMail(correoDest, "Asignar Grupo", "Profesor Asignado Correctamente");
     }
 
     public void registrarHorario(Analex analex, String correoDest) {
@@ -668,9 +722,29 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARHORARIO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        String dia = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String hora_inicio = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String hora_fin = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_aula = analex.Preanalisis().getAtributo();
+        grupoNegocio.registrarHorario(id_grupo, dia, hora_inicio, hora_fin, id_aula);
+        ClienteSMTP.sendMail(correoDest, "Registrar Horario", "Registro realizado Correctamente");
     }
 
     public void modificarHorario(Analex analex, String correoDest) {
@@ -682,9 +756,31 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARHORARIO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        String dia = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String hora_inicio = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String hora_fin = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_aula = analex.Preanalisis().getAtributo();
+        grupoNegocio.modificarHorario(id_grupo, id, dia, hora_inicio, hora_fin, id_aula);
+        ClienteSMTP.sendMail(correoDest, "Modificar Horario", "Modificacion realizada Correctamente");
     }
 
     public void eliminarHorario(Analex analex, String correoDest) {
@@ -696,9 +792,19 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_ELIMINARHORARIO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        GrupoNegocio grupoNegocio = new GrupoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        grupoNegocio.eliminarHorario(id, id_grupo);
+        ClienteSMTP.sendMail(correoDest, "Eliminar Horario", "Eliminacion Completada Satisfactoriamente");
     }
 
     public void obtenerAulas(Analex analex, String correoDest) {
