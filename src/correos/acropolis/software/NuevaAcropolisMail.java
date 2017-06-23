@@ -11,6 +11,7 @@ import correos.acropolis.procesador.Cinta;
 import correos.acropolis.procesador.Parser;
 import correos.acropolis.procesador.Token;
 import correos.acropolis.software.Negocio.AlumnoNegocio;
+import correos.acropolis.software.Negocio.ProfesorNegocio;
 import correos.acropolis.utils.Helper;
 import correos.acropolis.utils.Utils;
 import java.sql.Date;
@@ -289,9 +290,29 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARPROFESOR);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ProfesorNegocio profesorNegocio = new ProfesorNegocio();
+        analex.Avanzar();
+        // Atributos
+        String nombres = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String apellidos = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int telefono = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_postulacion = Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()));
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = analex.Preanalisis().getNombre() == Token.TRUE;
+        profesorNegocio.registrarProfesor(nombres, apellidos, telefono, fecha_postulacion, estado);
+        ClienteSMTP.sendMail(correoDest, "Registrar Profesor", "Registro realizado Correctamente");
     }
 
     public void modificarProfesor(Analex analex, String correoDest) {
@@ -303,9 +324,44 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARPROFESOR);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ProfesorNegocio profesorNegocio = new ProfesorNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel alumno = profesorNegocio.obtenerProfesor(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombres = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(alumno.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        String apellidos = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(alumno.getValueAt(0, 2));
+        analex.Avanzar();
+        analex.Avanzar();
+        int telefono = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(alumno.getValueAt(0, 3)));
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_postulacion = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()))
+                : ((Date) alumno.getValueAt(0, 4));
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = (analex.Preanalisis().getNombre() != Token.GB)
+                ? (analex.Preanalisis().getNombre() == Token.TRUE)
+                : Boolean.valueOf(String.valueOf(alumno.getValueAt(0, 5)));
+        profesorNegocio.modificarProfesor(id, nombres, apellidos, telefono, fecha_postulacion, estado);
+        ClienteSMTP.sendMail(correoDest, "Modificar Profesor", "Modificacion realizada Correctamente");
     }
 
     public void obtenerProfesores(Analex analex, String correoDest) {
@@ -317,9 +373,14 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERPROFESORES);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ProfesorNegocio profesorNegocio = new ProfesorNegocio();
+        String message = Utils.dibujarTabla(profesorNegocio.obtenerProfesores());
+        ClienteSMTP.sendMail(correoDest, "Obtener Profesores", message);
     }
 
     public void obtenerInscripciones(Analex analex, String correoDest) {

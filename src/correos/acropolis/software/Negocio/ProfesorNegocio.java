@@ -14,23 +14,20 @@ public class ProfesorNegocio {
     public Profesor m_Profesor;
 
     public ProfesorNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Profesor = new Profesor();
     }
 
     /**
      *
      * @param id
+     * @return
      */
     public DefaultTableModel obtenerProfesor(int id) {
-        return null;
+        return this.m_Profesor.getProfesor(id);
     }
 
     public DefaultTableModel obtenerProfesores() {
-        return null;
+        return this.m_Profesor.getProfesores();
     }
 
     /**
@@ -40,9 +37,11 @@ public class ProfesorNegocio {
      * @param telefono
      * @param fecha_postulacion
      * @param estado
+     * @return
      */
     public int registrarProfesor(String nombres, String apellidos, int telefono, Date fecha_postulacion, boolean estado) {
-        return 0;
+        this.m_Profesor.setProfesor(nombres, apellidos, telefono, fecha_postulacion, estado);
+        return this.m_Profesor.registrarProfesor();
     }
 
     /**
@@ -55,7 +54,8 @@ public class ProfesorNegocio {
      * @param estado
      */
     public void modificarProfesor(int id, String nombres, String apellidos, int telefono, Date fecha_postulacion, boolean estado) {
-
+        this.m_Profesor.setProfesor(id, nombres, apellidos, telefono, fecha_postulacion, estado);
+        this.m_Profesor.modificarProfesor();
     }
 
 }
