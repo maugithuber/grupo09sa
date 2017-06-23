@@ -13,13 +13,15 @@ import correos.acropolis.procesador.Token;
 import correos.acropolis.software.Negocio.AlumnoNegocio;
 import correos.acropolis.utils.Helper;
 import correos.acropolis.utils.Utils;
+import java.sql.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author mauriballes
  */
 public class NuevaAcropolisMail {
-    
+
     public void processMessage(String Message) {
         // Setteando Variables
         String destinatario = Utils.getDestinatario(Message);
@@ -171,60 +173,124 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
         }
-        
+
         // Sino, ejecutar el comando
-        if (token.getNombre() == Token.FIN) {
-            AlumnoNegocio alumnoNegocio = new AlumnoNegocio();
-            String message = Utils.dibujarTabla(alumnoNegocio.obtenerAlumnos());
-            ClienteSMTP.sendMail(correoDest, "Obtener Alumnos", message);
-        }
+        AlumnoNegocio alumnoNegocio = new AlumnoNegocio();
+        String message = Utils.dibujarTabla(alumnoNegocio.obtenerAlumnos());
+        ClienteSMTP.sendMail(correoDest, "Obtener Alumnos", message);
     }
 
     public void registrarAlumno(Analex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARALUMNO);
+            return;
         }
-        
+
         // Sino, ejecutar el comando
+        AlumnoNegocio alumnoNegocio = new AlumnoNegocio();
+        analex.Avanzar();
+        // Atributos
+        String nombres = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String apellidos = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int telefono = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_nacimiento = Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()));
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_ingreso = Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()));
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = analex.Preanalisis().getNombre() == Token.TRUE;
+        alumnoNegocio.registrarAlumno(nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
+        ClienteSMTP.sendMail(correoDest, "Registrar Alumno", "Registro realizado Correctamente");
+
     }
 
     public void modificarAlumno(Analex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARALUMNO);
+            return;
         }
-        
+
         // Sino, ejecutar el comando
+        AlumnoNegocio alumnoNegocio = new AlumnoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel alumno = alumnoNegocio.obtenerAlumno(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombres = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(alumno.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        String apellidos = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(alumno.getValueAt(0, 2));
+        analex.Avanzar();
+        analex.Avanzar();
+        int telefono = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(alumno.getValueAt(0, 3)));
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_nacimiento = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()))
+                : ((Date) alumno.getValueAt(0, 4));
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_ingreso = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()))
+                : ((Date) alumno.getValueAt(0, 5));
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = (analex.Preanalisis().getNombre() != Token.GB)
+                ? (analex.Preanalisis().getNombre() == Token.TRUE)
+                : Boolean.valueOf(String.valueOf(alumno.getValueAt(0, 6)));
+        alumnoNegocio.modificarAlumno(id, nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
+        ClienteSMTP.sendMail(correoDest, "Modificar Alumno", "Modificacion realizada Correctamente");
     }
 
     public void registrarProfesor(Analex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -232,13 +298,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -246,13 +312,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -260,13 +326,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -274,13 +340,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -288,13 +354,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -302,13 +368,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -316,13 +382,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -330,13 +396,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -344,13 +410,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -358,13 +424,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -372,13 +438,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -386,13 +452,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -400,13 +466,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -414,13 +480,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -428,13 +494,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -442,13 +508,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -456,13 +522,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -470,13 +536,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -484,13 +550,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -498,13 +564,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -512,13 +578,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -526,13 +592,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -540,13 +606,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -554,13 +620,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -568,13 +634,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -582,13 +648,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -596,13 +662,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -610,13 +676,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -624,13 +690,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -638,13 +704,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -652,13 +718,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -666,13 +732,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -680,13 +746,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 
@@ -694,13 +760,13 @@ public class NuevaAcropolisMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        
+
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
         }
-        
+
         // Sino, ejecutar el comando
     }
 }
