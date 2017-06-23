@@ -13,31 +13,29 @@ public class CursoNegocio {
     public Curso m_Curso;
 
     public CursoNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Curso = new Curso();
     }
 
     /**
      *
      * @param id
+     * @return
      */
     public DefaultTableModel obtenerCurso(int id) {
-        return null;
+        return this.m_Curso.getCurso(id);
     }
 
     public DefaultTableModel obtenerCursos() {
-        return null;
+        return this.m_Curso.getCursos();
     }
 
     /**
      *
      * @param idCurso
+     * @return
      */
     public DefaultTableModel obtenerPrerequisitos(int idCurso) {
-        return null;
+        return this.m_Curso.getPrerequisitos(idCurso);
     }
 
     /**
@@ -45,9 +43,11 @@ public class CursoNegocio {
      * @param nombre
      * @param descripcion
      * @param estado
+     * @return
      */
     public int registrarCurso(String nombre, String descripcion, boolean estado) {
-        return 0;
+        this.m_Curso.setCurso(nombre, descripcion, estado);
+        return this.m_Curso.registrarCurso();
     }
 
     /**
@@ -58,7 +58,8 @@ public class CursoNegocio {
      * @param estado
      */
     public void modificarCurso(int id, String nombre, String descripcion, boolean estado) {
-
+        this.m_Curso.setCurso(id, nombre, descripcion, estado);
+        this.m_Curso.modificarCurso();
     }
 
     /**
@@ -67,7 +68,7 @@ public class CursoNegocio {
      * @param id_prerequisito
      */
     public void agregarPrerequisito(int id_curso, int id_prerequisito) {
-
+        this.m_Curso.agregarPrerequisito(id_curso, id_prerequisito);
     }
 
     /**
@@ -76,7 +77,7 @@ public class CursoNegocio {
      * @param id_prerequisito
      */
     public void quitarPrerequisito(int id_curso, int id_prerequisito) {
-
+        this.m_Curso.quitarPrerequisito(id_curso, id_prerequisito);
     }
 
 }

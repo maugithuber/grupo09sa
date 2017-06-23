@@ -11,6 +11,7 @@ import correos.acropolis.procesador.Cinta;
 import correos.acropolis.procesador.Parser;
 import correos.acropolis.procesador.Token;
 import correos.acropolis.software.Negocio.AlumnoNegocio;
+import correos.acropolis.software.Negocio.CursoNegocio;
 import correos.acropolis.software.Negocio.ProfesorNegocio;
 import correos.acropolis.utils.Helper;
 import correos.acropolis.utils.Utils;
@@ -332,34 +333,34 @@ public class NuevaAcropolisMail {
         ProfesorNegocio profesorNegocio = new ProfesorNegocio();
         analex.Avanzar();
         int id = analex.Preanalisis().getAtributo();
-        DefaultTableModel alumno = profesorNegocio.obtenerProfesor(id);
+        DefaultTableModel profesor = profesorNegocio.obtenerProfesor(id);
 
         // Revisar los GuionBajo
         analex.Avanzar();
         analex.Avanzar();
         String nombres = (analex.Preanalisis().getNombre() != Token.GB)
                 ? Utils.quitarComillas(analex.Preanalisis().getToStr())
-                : String.valueOf(alumno.getValueAt(0, 1));
+                : String.valueOf(profesor.getValueAt(0, 1));
         analex.Avanzar();
         analex.Avanzar();
         String apellidos = (analex.Preanalisis().getNombre() != Token.GB)
                 ? Utils.quitarComillas(analex.Preanalisis().getToStr())
-                : String.valueOf(alumno.getValueAt(0, 2));
+                : String.valueOf(profesor.getValueAt(0, 2));
         analex.Avanzar();
         analex.Avanzar();
         int telefono = (analex.Preanalisis().getNombre() != Token.GB)
                 ? analex.Preanalisis().getAtributo()
-                : Integer.parseInt(String.valueOf(alumno.getValueAt(0, 3)));
+                : Integer.parseInt(String.valueOf(profesor.getValueAt(0, 3)));
         analex.Avanzar();
         analex.Avanzar();
         Date fecha_postulacion = (analex.Preanalisis().getNombre() != Token.GB)
                 ? Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()))
-                : ((Date) alumno.getValueAt(0, 4));
+                : ((Date) profesor.getValueAt(0, 4));
         analex.Avanzar();
         analex.Avanzar();
         boolean estado = (analex.Preanalisis().getNombre() != Token.GB)
                 ? (analex.Preanalisis().getNombre() == Token.TRUE)
-                : Boolean.valueOf(String.valueOf(alumno.getValueAt(0, 5)));
+                : Boolean.valueOf(String.valueOf(profesor.getValueAt(0, 5)));
         profesorNegocio.modificarProfesor(id, nombres, apellidos, telefono, fecha_postulacion, estado);
         ClienteSMTP.sendMail(correoDest, "Modificar Profesor", "Modificacion realizada Correctamente");
     }
@@ -490,9 +491,14 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERCURSOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        String message = Utils.dibujarTabla(cursoNegocio.obtenerCursos());
+        ClienteSMTP.sendMail(correoDest, "Obtener Cursos", message);
     }
 
     public void obtenerPrerequisitos(Analex analex, String correoDest) {
@@ -504,9 +510,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERPREREQUISITOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(cursoNegocio.obtenerPrerequisitos(id));
+        ClienteSMTP.sendMail(correoDest, "Obtener Prerequisitos", message);
     }
 
     public void registrarCurso(Analex analex, String correoDest) {
@@ -518,9 +531,23 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARCURSO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        analex.Avanzar();
+        // Atributos
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String descripcion = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = analex.Preanalisis().getNombre() == Token.TRUE;
+        cursoNegocio.registrarCurso(nombre, descripcion, estado);
+        ClienteSMTP.sendMail(correoDest, "Registrar Curso", "Registro realizado Correctamente");
     }
 
     public void modificarCurso(Analex analex, String correoDest) {
@@ -532,9 +559,34 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARCURSO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel curso = cursoNegocio.obtenerCurso(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombre = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(curso.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        String descripcion = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(curso.getValueAt(0, 2));
+        analex.Avanzar();
+        analex.Avanzar();
+        boolean estado = (analex.Preanalisis().getNombre() != Token.GB)
+                ? (analex.Preanalisis().getNombre() == Token.TRUE)
+                : Boolean.valueOf(String.valueOf(curso.getValueAt(0, 5)));
+        cursoNegocio.modificarCurso(id, nombre, descripcion, estado);
+        ClienteSMTP.sendMail(correoDest, "Modificar Curso", "Modificacion realizada Correctamente");
     }
 
     public void obtenerGrupos(Analex analex, String correoDest) {
@@ -812,9 +864,19 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_AGREGARPREREQUISITO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        analex.Avanzar();
+        int id_curso = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_prerequisito = analex.Preanalisis().getAtributo();
+        cursoNegocio.agregarPrerequisito(id_curso, id_prerequisito);
+        ClienteSMTP.sendMail(correoDest, "Agregar Prerequisito", "Se han agregado los prerequisitos de manera correcta");
     }
 
     public void quitarPrerequisito(Analex analex, String correoDest) {
@@ -826,8 +888,18 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_QUITARPREREQUISITO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        CursoNegocio cursoNegocio = new CursoNegocio();
+        analex.Avanzar();
+        int id_curso = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_prerequisito = analex.Preanalisis().getAtributo();
+        cursoNegocio.quitarPrerequisito(id_curso, id_prerequisito);
+        ClienteSMTP.sendMail(correoDest, "Quitar Prerequisito", "Se han quitado los prerequisitos de manera correcta");
     }
 }
