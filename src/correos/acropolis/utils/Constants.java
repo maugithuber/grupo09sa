@@ -16,4 +16,7 @@ public class Constants {
     public static final String MAIL_USER = "grupo01sc";
     public static final String MAIL_PASSWORD = "grupo01grupo01";
     public static final String MAIL_USERMAIL = "grupo01sc@ficct.uagrm.edu.bo";
+    
+    // Time for Server Request
+    public static final int TIME_THREAD = 2; // Tiempo en segundos
 }

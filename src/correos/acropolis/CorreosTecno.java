@@ -7,6 +7,7 @@ package correos.acropolis;
 
 import correos.acropolis.correo.ClientePOP;
 import correos.acropolis.software.NuevaAcropolisMail;
+import correos.acropolis.utils.Constants;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +53,7 @@ public class CorreosTecno extends javax.swing.JFrame {
 
         public void waitCiclo() {
             try {
-                sleep(2000); // Esperar 2 seg.
+                sleep(Constants.TIME_THREAD * 1000); // Esperar 2 seg.
             } catch (InterruptedException ex) {
                 Logger.getLogger(CorreosTecno.class.getName()).log(Level.SEVERE, null, ex);
             }
