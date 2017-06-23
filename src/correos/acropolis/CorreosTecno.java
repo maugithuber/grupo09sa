@@ -41,7 +41,7 @@ public class CorreosTecno extends javax.swing.JFrame {
                 // Preguntar si hay mail
                 String content = ClientePOP.readMail();
                 if (content != null) {
-                    System.out.println(content);
+                    System.out.println("Llego Correo!!!");
                     HiloAtencion atender = new HiloAtencion();
                     atender.mensaje = content;
                     atender.start();
