@@ -98,6 +98,10 @@ public class Utils {
             rowList.add(row.subList(0, row.size()));
         }
 
+        if (rowList.size() < 1) {
+            return "(Tabla Vacia)";
+        }
+
         // Creando Tabla para mostrar
         Board board = new Board(125);
         Table table = new Table(board, 125, headers, rowList);
