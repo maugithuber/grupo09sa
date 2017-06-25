@@ -40,6 +40,16 @@ public class GrupoNegocio {
     public DefaultTableModel obtenerHorarios(int id_grupo) {
         return this.m_Horario.getHorarios(id_grupo);
     }
+    
+    /**
+     *
+     * @param id
+     * @param id_grupo
+     * @return
+     */
+    public DefaultTableModel obtenerHorario(int id, int id_grupo) {
+        return this.m_Horario.getHorario(id, id_grupo);
+    }
 
     /**
      *

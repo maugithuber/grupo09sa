@@ -767,18 +767,29 @@ public class NuevaAcropolisMail {
         analex.Avanzar();
         analex.Avanzar();
         int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel horarios = grupoNegocio.obtenerHorario(id, id_grupo);
+
+        // Revisar los Guion bajo
         analex.Avanzar();
         analex.Avanzar();
-        String dia = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        String dia = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(horarios.getValueAt(0, 2));
         analex.Avanzar();
         analex.Avanzar();
-        String hora_inicio = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        String hora_inicio = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(horarios.getValueAt(0, 3));
         analex.Avanzar();
         analex.Avanzar();
-        String hora_fin = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        String hora_fin = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(horarios.getValueAt(0, 4));
         analex.Avanzar();
         analex.Avanzar();
-        int id_aula = analex.Preanalisis().getAtributo();
+        int id_aula = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(horarios.getValueAt(0, 5)));
         grupoNegocio.modificarHorario(id_grupo, id, dia, hora_inicio, hora_fin, id_aula);
         ClienteSMTP.sendMail(correoDest, "Modificar Horario", "Modificacion realizada Correctamente");
     }
