@@ -11,10 +11,10 @@ import javax.swing.table.DefaultTableModel;
  * @created 15-Jun-2017 9:04:40 PM
  */
 public class KardexNegocio {
-
+    
     public Asistencia m_Asistencia;
     public Kardex m_Kardex;
-
+    
     public KardexNegocio() {
         this.m_Asistencia = new Asistencia();
         this.m_Kardex = new Kardex();
@@ -71,10 +71,13 @@ public class KardexNegocio {
 
     /**
      *
-     * @param id
+     * @param id_alumno
+     * @param id_grupo
+     * @param mes
+     * @param gestion
      */
-    public void eliminarKardex(int id) {
-        this.m_Kardex.eliminarKardex(id);
+    public void eliminarKardex(int id_alumno, int id_grupo, int mes, int gestion) {
+        this.m_Kardex.eliminarKardex(id_alumno, id_grupo, mes, gestion);
     }
 
     /**
@@ -109,5 +112,5 @@ public class KardexNegocio {
         this.m_Asistencia.setAsistencia(id, estado, fecha, id_kardex);
         this.m_Asistencia.modificarAsistencia();
     }
-
+    
 }

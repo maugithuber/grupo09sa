@@ -14,6 +14,7 @@ import correos.acropolis.software.Negocio.AlumnoNegocio;
 import correos.acropolis.software.Negocio.AulaNegocio;
 import correos.acropolis.software.Negocio.CursoNegocio;
 import correos.acropolis.software.Negocio.GrupoNegocio;
+import correos.acropolis.software.Negocio.InscripcionNegocio;
 import correos.acropolis.software.Negocio.KardexNegocio;
 import correos.acropolis.software.Negocio.ProfesorNegocio;
 import correos.acropolis.utils.Helper;
@@ -396,9 +397,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERINSCRIPCIONES);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        analex.Avanzar();
+        int id_alumno = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(inscripcionNegocio.obtenerInscripciones(id_alumno));
+        ClienteSMTP.sendMail(correoDest, "Obtener Inscripciones", message);
     }
 
     public void obtenerDetalleInscripcion(Analex analex, String correoDest) {
@@ -410,9 +418,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERDETALLEINSCRIPCION);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(inscripcionNegocio.obtenerDetalleInscripcion(id));
+        ClienteSMTP.sendMail(correoDest, "Obtener Detalle Inscripcion", message);
     }
 
     public void obtenerCursosHabilitados(Analex analex, String correoDest) {
@@ -424,9 +439,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERCURSOSHABILITADOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        analex.Avanzar();
+        int id_alumno = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(inscripcionNegocio.obtenerCursosHabilitados(id_alumno));
+        ClienteSMTP.sendMail(correoDest, "Obtener Cursos Habilitados", message);
     }
 
     public void registrarInscripcion(Analex analex, String correoDest) {
@@ -438,9 +460,20 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARINSCRIPCION);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        analex.Avanzar();
+        // Atributos
+        Date fecha_inscripcion = Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()));
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_alumno = analex.Preanalisis().getAtributo();
+        inscripcionNegocio.registrarInscripcion(fecha_inscripcion, id_alumno);
+        ClienteSMTP.sendMail(correoDest, "Registrar Inscripcion", "Registro realizado Correctamente");
     }
 
     public void modificarInscripcion(Analex analex, String correoDest) {
@@ -452,9 +485,29 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARINSCRIPCION);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel inscripcion = inscripcionNegocio.obtenerInscripcion(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        Date fecha_inscripcion = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()))
+                : ((Date) inscripcion.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_alumno = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(inscripcion.getValueAt(0, 2)));
+        inscripcionNegocio.modificarInscripcion(id, fecha_inscripcion, id_alumno);
+        ClienteSMTP.sendMail(correoDest, "Modificar Inscripcion", "Modificacion realizada Correctamente");
     }
 
     public void adicionarGrupos(Analex analex, String correoDest) {
@@ -466,9 +519,30 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_ADICIONARGRUPOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        KardexNegocio kardexNegocio = new KardexNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int mes = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int gestion = analex.Preanalisis().getAtributo();
+        inscripcionNegocio.adicionarGrupos(id, id_grupo);
+        DefaultTableModel inscripcion = inscripcionNegocio.obtenerInscripcion(id);
+        int id_alumno = Integer.parseInt(String.valueOf(inscripcion.getValueAt(0, 2)));
+        kardexNegocio.registrarKardex(mes, gestion, id_alumno, id_grupo);
+        ClienteSMTP.sendMail(correoDest, "Adicionar Grupo", "Registro realizado Correctamente");
     }
 
     public void retirarGrupos(Analex analex, String correoDest) {
@@ -480,9 +554,30 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_RETIRARGRUPOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        InscripcionNegocio inscripcionNegocio = new InscripcionNegocio();
+        KardexNegocio kardexNegocio = new KardexNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int mes = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int gestion = analex.Preanalisis().getAtributo();
+        inscripcionNegocio.retirarGrupos(id, id_grupo);
+        DefaultTableModel inscripcion = inscripcionNegocio.obtenerInscripcion(id);
+        int id_alumno = Integer.parseInt(String.valueOf(inscripcion.getValueAt(0, 2)));
+        kardexNegocio.eliminarKardex(id_alumno, id_grupo, mes, gestion);
+        ClienteSMTP.sendMail(correoDest, "Retirar Grupo", "Eliminacion realizada Correctamente");
     }
 
     public void obtenerCursos(Analex analex, String correoDest) {

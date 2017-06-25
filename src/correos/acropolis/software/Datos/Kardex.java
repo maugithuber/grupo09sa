@@ -268,20 +268,29 @@ public class Kardex {
 
     /**
      *
-     * @param id
+     * @param id_alumno
+     * @param id_grupo
+     * @param mes
+     * @param gestion
      */
-    public void eliminarKardex(int id) {
+    public void eliminarKardex(int id_alumno, int id_grupo, int mes, int gestion) {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
 
         // Preparo la consulta
         String sql = "DELETE FROM kardex\n"
-                + "WHERE kardex.id = ?";
+                + "WHERE kardex.id_alumno = ?\n"
+                + "AND kardex.id_grupo = ?\n"
+                + "AND kardex.mes = ?\n"
+                + "AND kardex.gestion = ?";
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, id_alumno);
+            ps.setInt(2, id_grupo);
+            ps.setInt(3, mes);
+            ps.setInt(4, gestion);
             int rows = ps.executeUpdate();
 
             // Cierro la conexion

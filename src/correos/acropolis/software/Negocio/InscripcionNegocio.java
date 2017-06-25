@@ -14,52 +14,54 @@ public class InscripcionNegocio {
     public Inscripcion m_Inscripcion;
 
     public InscripcionNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Inscripcion = new Inscripcion();
     }
 
     /**
      *
      * @param id
+     * @return 
      */
     public DefaultTableModel obtenerInscripcion(int id) {
-        return null;
+        return this.m_Inscripcion.getInscripcion(id);
     }
 
     /**
      *
      * @param id_alumno
+     * @return 
      */
     public DefaultTableModel obtenerInscripciones(int id_alumno) {
-        return null;
+        return this.m_Inscripcion.getInscripciones(id_alumno);
     }
 
     /**
      *
      * @param id
+     * @return 
      */
     public DefaultTableModel obtenerDetalleInscripcion(int id) {
-        return null;
+        return this.m_Inscripcion.getDetalleInscripcion(id);
     }
 
     /**
      *
      * @param id_alumno
+     * @return 
      */
     public DefaultTableModel obtenerCursosHabilitados(int id_alumno) {
-        return null;
+        return this.m_Inscripcion.getCursosHabilitados(id_alumno);
     }
 
     /**
      *
      * @param fecha_inscripcion
      * @param id_alumno
+     * @return 
      */
     public int registrarInscripcion(Date fecha_inscripcion, int id_alumno) {
-        return 0;
+        this.m_Inscripcion.setInscripcion(fecha_inscripcion, id_alumno);
+        return this.m_Inscripcion.registrarInscripcion();
     }
 
     /**
@@ -69,7 +71,8 @@ public class InscripcionNegocio {
      * @param id_alumno
      */
     public void modificarInscripcion(int id, Date fecha_inscripcion, int id_alumno) {
-
+        this.m_Inscripcion.setInscripcion(id, fecha_inscripcion, id_alumno);
+        this.m_Inscripcion.modificarInscripcion();
     }
 
     /**
@@ -78,7 +81,7 @@ public class InscripcionNegocio {
      * @param id_grupo
      */
     public void adicionarGrupos(int id, int id_grupo) {
-
+        this.m_Inscripcion.adicionarGrupos(id, id_grupo);
     }
 
     /**
@@ -87,7 +90,7 @@ public class InscripcionNegocio {
      * @param id_grupo
      */
     public void retirarGrupos(int id, int id_grupo) {
-
+        this.m_Inscripcion.retirarGrupos(id, id_grupo);
     }
 
 }
