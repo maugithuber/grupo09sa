@@ -11,6 +11,7 @@ import correos.acropolis.procesador.Cinta;
 import correos.acropolis.procesador.Parser;
 import correos.acropolis.procesador.Token;
 import correos.acropolis.software.Negocio.AlumnoNegocio;
+import correos.acropolis.software.Negocio.AulaNegocio;
 import correos.acropolis.software.Negocio.CursoNegocio;
 import correos.acropolis.software.Negocio.GrupoNegocio;
 import correos.acropolis.software.Negocio.ProfesorNegocio;
@@ -827,9 +828,14 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERAULAS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        AulaNegocio aulaNegocio = new AulaNegocio();
+        String message = Utils.dibujarTabla(aulaNegocio.obtenerAulas());
+        ClienteSMTP.sendMail(correoDest, "Obtener Aulas", message);
     }
 
     public void registrarAula(Analex analex, String correoDest) {
@@ -841,9 +847,20 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARAULA);
+            return;
         }
 
         // Sino, ejecutar el comando
+        AulaNegocio aulaNegocio = new AulaNegocio();
+        analex.Avanzar();
+        // Atributos
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int capacidad = analex.Preanalisis().getAtributo();
+        aulaNegocio.registrarAula(nombre, capacidad);
+        ClienteSMTP.sendMail(correoDest, "Registrar Aula", "Registro realizado Correctamente");
     }
 
     public void modificarAula(Analex analex, String correoDest) {
@@ -855,9 +872,29 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_MODIFICARAULA);
+            return;
         }
 
         // Sino, ejecutar el comando
+        AulaNegocio aulaNegocio = new AulaNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel aula = aulaNegocio.obtenerAula(id);
+
+        // Revisar los Guion bajo
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombre = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(aula.getValueAt(0, 1));
+        analex.Avanzar();
+        analex.Avanzar();
+        int capacidad = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(aula.getValueAt(0, 2)));
+        aulaNegocio.modificarAula(id, nombre, capacidad);
+        ClienteSMTP.sendMail(correoDest, "Modificar Aula", "Modificacion Realizada Correctamente");
     }
 
     public void obtenerKardexs(Analex analex, String correoDest) {

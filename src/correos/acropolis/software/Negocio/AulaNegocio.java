@@ -13,32 +13,31 @@ public class AulaNegocio {
     public Aula m_Aula;
 
     public AulaNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Aula = new Aula();
     }
 
     /**
      *
      * @param id
+     * @return
      */
     public DefaultTableModel obtenerAula(int id) {
-        return null;
+        return this.m_Aula.getAula(id);
     }
 
     public DefaultTableModel obtenerAulas() {
-        return null;
+        return this.m_Aula.getAulas();
     }
 
     /**
      *
      * @param nombre
      * @param capacidad
+     * @return
      */
     public int registrarAula(String nombre, int capacidad) {
-        return 0;
+        this.m_Aula.setAula(nombre, capacidad);
+        return this.m_Aula.registrarAula();
     }
 
     /**
@@ -48,7 +47,8 @@ public class AulaNegocio {
      * @param capacidad
      */
     public void modificarAula(int id, String nombre, int capacidad) {
-
+        this.m_Aula.setAula(id, nombre, capacidad);
+        this.m_Aula.modificarAula();
     }
 
 }
