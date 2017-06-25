@@ -16,35 +16,44 @@ public class KardexNegocio {
     public Kardex m_Kardex;
 
     public KardexNegocio() {
-
-    }
-
-    public void finalize() throws Throwable {
-
+        this.m_Asistencia = new Asistencia();
+        this.m_Kardex = new Kardex();
     }
 
     /**
      *
      * @param id
+     * @return
      */
     public DefaultTableModel obtenerKardex(int id) {
-        return null;
+        return this.m_Kardex.getKardex(id);
     }
 
     /**
      *
      * @param id_alumno
+     * @return
      */
     public DefaultTableModel obtenerKardexs(int id_alumno) {
-        return null;
+        return this.m_Kardex.getKardexs(id_alumno);
     }
 
     /**
      *
      * @param id_kardex
+     * @return
      */
     public DefaultTableModel obtenerAsistencias(int id_kardex) {
-        return null;
+        return this.m_Asistencia.getAsistencias(id_kardex);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public DefaultTableModel obtenerAsistencia(int id) {
+        return this.m_Asistencia.getAsistencia(id);
     }
 
     /**
@@ -53,9 +62,11 @@ public class KardexNegocio {
      * @param gestion
      * @param id_alumno
      * @param id_grupo
+     * @return
      */
     public int registrarKardex(int mes, int gestion, int id_alumno, int id_grupo) {
-        return 0;
+        this.m_Kardex.setKardex(mes, gestion, id_alumno, id_grupo);
+        return this.m_Kardex.registrarKardex();
     }
 
     /**
@@ -63,7 +74,7 @@ public class KardexNegocio {
      * @param id
      */
     public void eliminarKardex(int id) {
-
+        this.m_Kardex.eliminarKardex(id);
     }
 
     /**
@@ -72,7 +83,7 @@ public class KardexNegocio {
      * @param nota
      */
     public void registrarNota(int id, String nota) {
-
+        this.m_Kardex.registrarNota(id, nota);
     }
 
     /**
@@ -80,9 +91,11 @@ public class KardexNegocio {
      * @param estado
      * @param fecha
      * @param id_kardex
+     * @return
      */
     public int registrarAsistencia(String estado, Date fecha, int id_kardex) {
-        return 0;
+        this.m_Asistencia.setAsistencia(estado, fecha, id_kardex);
+        return this.m_Asistencia.registrarAsistencia();
     }
 
     /**
@@ -92,8 +105,9 @@ public class KardexNegocio {
      * @param fecha
      * @param id_kardex
      */
-    public int modificarAsistencia(int id, String estado, Date fecha, int id_kardex) {
-        return 0;
+    public void modificarAsistencia(int id, String estado, Date fecha, int id_kardex) {
+        this.m_Asistencia.setAsistencia(id, estado, fecha, id_kardex);
+        this.m_Asistencia.modificarAsistencia();
     }
 
 }
