@@ -17,6 +17,7 @@ import correos.acropolis.software.Negocio.GrupoNegocio;
 import correos.acropolis.software.Negocio.InscripcionNegocio;
 import correos.acropolis.software.Negocio.KardexNegocio;
 import correos.acropolis.software.Negocio.ProfesorNegocio;
+import correos.acropolis.software.Negocio.ReporteNegocio;
 import correos.acropolis.utils.Helper;
 import correos.acropolis.utils.Utils;
 import java.sql.Date;
@@ -1136,9 +1137,16 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REPORTEHISTORICO);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ReporteNegocio reporteNegocio = new ReporteNegocio();
+        analex.Avanzar();
+        int id_alumno = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(reporteNegocio.reporteHistorico(id_alumno));
+        ClienteSMTP.sendMail(correoDest, "Reporte Historico", message);
     }
 
     public void reporteAlumnosInscritos(Analex analex, String correoDest) {
@@ -1150,9 +1158,22 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REPORTEALUMNOSINSCRITOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ReporteNegocio reporteNegocio = new ReporteNegocio();
+        analex.Avanzar();
+        int id_grupo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int mes = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int gestion = analex.Preanalisis().getAtributo();
+        String message = Utils.dibujarTabla(reporteNegocio.reporteAlumnosInscritos(id_grupo, mes, gestion));
+        ClienteSMTP.sendMail(correoDest, "Reporte Alumnos Inscritos", message);
     }
 
     public void reporteOfertaCursos(Analex analex, String correoDest) {
@@ -1164,9 +1185,14 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REPORTEOFERTACURSOS);
+            return;
         }
 
         // Sino, ejecutar el comando
+        ReporteNegocio reporteNegocio = new ReporteNegocio();
+        String message = Utils.dibujarTabla(reporteNegocio.reporteOfertaCursos());
+        ClienteSMTP.sendMail(correoDest, "Reporte Oferta de Cursos", message);
     }
 
     public void agregarPrerequisito(Analex analex, String correoDest) {
