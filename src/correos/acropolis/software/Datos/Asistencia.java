@@ -73,7 +73,7 @@ public class Asistencia {
                 + "asistencia.id,\n"
                 + "asistencia.estado,\n"
                 + "asistencia.fecha,\n"
-                + "asistencia.id_kardex,\n"
+                + "asistencia.id_kardex\n"
                 + "FROM asistencia\n"
                 + "WHERE asistencia.id=?";
         // Los simbolos de interrogacion son para mandar parametros 
@@ -125,7 +125,7 @@ public class Asistencia {
                 + "asistencia.id,\n"
                 + "asistencia.estado,\n"
                 + "asistencia.fecha,\n"
-                + "asistencia.id_kardex,\n"
+                + "asistencia.id_kardex\n"
                 + "FROM asistencia\n"
                 + "WHERE asistencia.id_kardex=?";
         // Los simbolos de interrogacion son para mandar parametros 

@@ -67,7 +67,7 @@ public class ReporteNegocio {
                 historico.addRow(new Object[]{
                     rs.getString("curso"),
                     rs.getString("grupo"),
-                    rs.getInt("nota")
+                    rs.getString("nota")
                 });
             }
         } catch (SQLException ex) {
@@ -98,7 +98,8 @@ public class ReporteNegocio {
                 + "WHERE kardex.id_grupo = ?\n"
                 + "AND alumno.id = kardex.id_alumno\n"
                 + "AND kardex.mes = ?\n"
-                + "AND kardex.gestion = ?";
+                + "AND kardex.gestion = ?\n"
+                + "GROUP BY alumno.id";
 
         try {
             // La ejecuto
@@ -116,9 +117,9 @@ public class ReporteNegocio {
             while (rs.next()) {
                 // Agrego las tuplas a mi tabla
                 listaAlumnos.addRow(new Object[]{
-                    rs.getString("id"),
+                    rs.getInt("id"),
                     rs.getString("apellidos"),
-                    rs.getInt("nombres")
+                    rs.getString("nombres")
                 });
             }
         } catch (SQLException ex) {

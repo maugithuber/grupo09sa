@@ -161,11 +161,12 @@ public class Kardex {
                 // Agrego las tuplas a mi tabla
                 kardex.addRow(new Object[]{
                     rs.getInt("id"),
-                    rs.getInt("nota"),
+                    rs.getString("nota"),
                     rs.getString("mes"),
                     rs.getString("gestion"),
-                    rs.getString("id_alumno"),
-                    rs.getInt("id_grupo"),});
+                    rs.getInt("id_alumno"),
+                    rs.getInt("id_grupo")
+                });
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -216,11 +217,12 @@ public class Kardex {
                 // Agrego las tuplas a mi tabla
                 kardexs.addRow(new Object[]{
                     rs.getInt("id"),
-                    rs.getInt("nota"),
+                    rs.getString("nota"),
                     rs.getString("mes"),
                     rs.getString("gestion"),
-                    rs.getString("id_alumno"),
-                    rs.getInt("id_grupo"),});
+                    rs.getInt("id_alumno"),
+                    rs.getInt("id_grupo")
+                });
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

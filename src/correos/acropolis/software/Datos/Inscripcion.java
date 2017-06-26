@@ -214,13 +214,15 @@ public class Inscripcion {
         // Preparo la consulta
         String sql = "select curso.id, curso.nombre\n"
                 + "from curso,prerequisitos\n"
-                + "where prerequisitos.id_prerequisito\n"
-                + "in (select curso.id \n"
-                + "from alumno,curso,grupo,kardex,prerequisitos \n"
-                + "where kardex.id_alumno = ? \n"
-                + "and kardex.nota! = 'R' \n"
-                + "and kardex.id_grupo = grupo.id \n"
-                + "and curso.id = grupo.id_curso) \n"
+                + "where (curso.id = prerequisitos.id_curso\n"
+                + "and prerequisitos.id_prerequisito\n"
+                + "in (select curso.id\n"
+                + "from curso,grupo,kardex\n"
+                + "where kardex.id_alumno = ?\n"
+                + "and kardex.nota != 'R'\n"
+                + "and kardex.id_grupo = grupo.id\n"
+                + "and curso.id = grupo.id_curso))\n"
+                + "or curso.id not in (select prerequisitos.id_curso from prerequisitos)\n"
                 + "group by curso.id, curso.nombre";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
@@ -351,8 +353,8 @@ public class Inscripcion {
 
         // Preparo la consulta
         String sql = "DELETE FROM boleta_grupo\n"
-                + "boleta_grupo.id_boleta = ?,\n"
-                + "boleta_grupo.id_grupo = ?\n";
+                + "WHERE boleta_grupo.id_boleta = ?\n"
+                + "AND boleta_grupo.id_grupo = ?";
 
         try {
             // La ejecuto
