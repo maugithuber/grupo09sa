@@ -150,10 +150,10 @@ public class NuevaAcropolisMail {
                 obtenerAsistencias(analex, destinatario);
                 break;
             case Token.REGISTRARASISTENCIAS:
-                registrarAsistencia(analex, destinatario);
+                registrarAsistencias(analex, destinatario);
                 break;
             case Token.MODIFICARASISTENCIAS:
-                modificarAsistencia(analex, destinatario);
+                modificarAsistencias(analex, destinatario);
                 break;
             case Token.REGISTRARNOTA:
                 registrarNota(analex, destinatario);
@@ -1015,7 +1015,7 @@ public class NuevaAcropolisMail {
         ClienteSMTP.sendMail(correoDest, "Obtener Kardexs", message);
     }
 
-    public void registrarAsistencia(Analex analex, String correoDest) {
+    public void registrarAsistencias(Analex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
@@ -1043,7 +1043,7 @@ public class NuevaAcropolisMail {
         ClienteSMTP.sendMail(correoDest, "Registrar Asistencia", "Registro realizado Correctamente");
     }
 
-    public void modificarAsistencia(Analex analex, String correoDest) {
+    public void modificarAsistencias(Analex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();

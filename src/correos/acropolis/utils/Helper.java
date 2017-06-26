@@ -11,43 +11,343 @@ package correos.acropolis.utils;
  */
 public class Helper {
 
-    public static final String HELP_GLOBAL = "Bienvenido!!!";
-    public static final String HELP_OBTENERALUMNOS = "Obtener Alumnos!!!";
-    public static final String HELP_REGISTRARALUMNO = "Registrar Alumno!!!";
-    public static final String HELP_MODIFICARALUMNO = "Modificar Alumno!!!";
-    public static final String HELP_OBTENERPROFESORES = "Obtener Profesores!!!";
-    public static final String HELP_REGISTRARPROFESOR = "Registrar Profesor!!!";
-    public static final String HELP_MODIFICARPROFESOR = "Modificar Profesor!!!";
-    public static final String HELP_OBTENERINSCRIPCIONES = "Obtener Inscripciones!!!";
-    public static final String HELP_OBTENERDETALLEINSCRIPCION = "Obtener Detalle de Inscripciones!!!";
-    public static final String HELP_OBTENERCURSOSHABILITADOS = "Obtener Cursos Habilitados!!!";
-    public static final String HELP_REGISTRARINSCRIPCION = "Registrar Inscripcion!!!";
-    public static final String HELP_MODIFICARINSCRIPCION = "Modificar Inscripcion!!!";
-    public static final String HELP_ADICIONARGRUPOS = "Adicionar Grupos!!!";
-    public static final String HELP_RETIRARGRUPOS = "Retirar Grupos!!!";
-    public static final String HELP_OBTENERCURSOS = "Obtener Cursos!!!";
-    public static final String HELP_OBTENERPREREQUISITOS = "Obtener Prerequisitos!!!";
-    public static final String HELP_REGISTRARCURSO = "Registrar Curso!!!";
-    public static final String HELP_MODIFICARCURSO = "Modificar Curso!!!";
-    public static final String HELP_OBTENERGRUPOS = "Obtener Grupos!!!";
-    public static final String HELP_OBTENERHORARIOS = "Obtener Horarios!!!";
-    public static final String HELP_REGISTRARGRUPO = "Registrar Grupo!!!";
-    public static final String HELP_MODIFICARGRUPO = "Modificar Grupo!!!";
-    public static final String HELP_ASIGNARGRUPO = "Asignar Grupo!!!";
-    public static final String HELP_REGISTRARHORARIO = "Registrar Horario!!!";
-    public static final String HELP_MODIFICARHORARIO = "Modificar Horario111";
-    public static final String HELP_ELIMINARHORARIO = "Eliminar Horario!!!";
-    public static final String HELP_OBTENERAULAS = "Obtener Aulas!!!";
-    public static final String HELP_REGISTRARAULA = "Registrar Aula!!!";
-    public static final String HELP_MODIFICARAULA = "Modificar Aula!!!";
-    public static final String HELP_OBTENERKARDEXS = "Obtener Kardexs!!!";
-    public static final String HELP_OBTENERASISTENCIAS = "Obtener Asistencias!!!";
-    public static final String HELP_REGISTRARASISTENCIAS = "Registrar Asistencias!!!";
-    public static final String HELP_MODIFICARASISTENCIAS = "Modificar Asistencias!!!";
-    public static final String HELP_REGISTRARNOTA = "Registrar Nota!!!";
-    public static final String HELP_REPORTEHISTORICO = "Reporte Historico!!!";
-    public static final String HELP_REPORTEALUMNOSINSCRITOS = "Reporte Alumnos Inscritos!!!";
-    public static final String HELP_REPORTEOFERTACURSOS = "Reporte Oferta de Cursos!!!";
-    public static final String HELP_AGREGARPREREQUISITO = "Agregar Prerequisito!!!";
-    public static final String HELP_QUITARPREREQUISITO = "Quitar Prerequisito!!!";
+    public static final String HELP_GLOBAL = "Bienvenido!!!\n\n"
+            + "A continuacion se listaran los comandos disponibles para interactuar con el sistema\n"
+            + "Para acceder a la documentacion de cada uno, enviar el nombre del comando seguido de la palabra HELP\n\n"
+            + "OBTENERALUMNOS\n"
+            + "REGISTRARALUMNO\n"
+            + "MODIFICARALUMNO\n"
+            + "OBTENERPROFESORES\n"
+            + "REGISTRARPROFESOR\n"
+            + "MODIFICARPROFESOR\n"
+            + "OBTENERINSCRIPCIONES\n"
+            + "OBTENERDETALLEINSCRIPCION\n"
+            + "OBTENERCURSOSHABILITADOS\n"
+            + "REGISTRARINSCRIPCION\n"
+            + "MODIFICARINSCRIPCION\n"
+            + "ADICIONARGRUPOS\n"
+            + "RETIRARGRUPOS\n"
+            + "OBTENERCURSOS\n"
+            + "OBTENERPREREQUISITOS\n"
+            + "REGISTRARCURSO\n"
+            + "MODIFICARCURSO\n"
+            + "OBTENERGRUPOS\n"
+            + "OBTENERHORARIOS\n"
+            + "REGISTRARGRUPO\n"
+            + "MODIFICARGRUPO\n"
+            + "ASIGNARGRUPO\n"
+            + "REGISTRARHORARIO\n"
+            + "MODIFICARHORARIO\n"
+            + "ELIMINARHORARIO\n"
+            + "OBTENERAULAS\n"
+            + "REGISTRARAULA\n"
+            + "MODIFICARAULA\n"
+            + "OBTENERKARDEXS\n"
+            + "OBTENERASISTENCIAS\n"
+            + "REGISTRARASISTENCIAS\n"
+            + "MODIFICARASISTENCIAS\n"
+            + "REGISTRARNOTA\n"
+            + "REPORTEHISTORICO\n"
+            + "REPORTEALUMNOSINSCRITOS\n"
+            + "REPORTEOFERTACURSOS\n"
+            + "AGREGARPREREQUISITO\n"
+            + "QUITARPREREQUISITO";
+    public static final String HELP_OBTENERALUMNOS = "Obtener Alumnos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los alumnos registrados en el sistema,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_REGISTRARALUMNO = "Registrar Alumno!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un alumno en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- nombres (String con Comillas Dobles)\n"
+            + "- apellidos (String con Comillas Dobles)\n"
+            + "- telefono (Entero)\n"
+            + "- fecha_nacimiento (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- fecha_ingreso (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- estado (true, false)";
+    public static final String HELP_MODIFICARALUMNO = "Modificar Alumno!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un alumno en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- nombres (String con Comillas Dobles)\n"
+            + "- apellidos (String con Comillas Dobles)\n"
+            + "- telefono (Entero)\n"
+            + "- fecha_nacimiento (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- fecha_ingreso (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- estado (true, false)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado";
+    public static final String HELP_OBTENERPROFESORES = "Obtener Profesores!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los profesores registrados en el sistema,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_REGISTRARPROFESOR = "Registrar Profesor!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un profesor en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- nombres (String con Comillas Dobles)\n"
+            + "- apellidos (String con Comillas Dobles)\n"
+            + "- telefono (Entero)\n"
+            + "- fecha_postulacion (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- estado (true, false)";
+    public static final String HELP_MODIFICARPROFESOR = "Modificar Profesor!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un profesor en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- nombres (String con Comillas Dobles)\n"
+            + "- apellidos (String con Comillas Dobles)\n"
+            + "- telefono (Entero)\n"
+            + "- fecha_postulacion (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- estado (true, false)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "nombres, apellidos, telefono, fecha_postulacion, estado";
+    public static final String HELP_OBTENERINSCRIPCIONES = "Obtener Inscripciones!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar las boletas de inscripcion registradas en el sistema,\n"
+            + "de un alumno, se debe enviar el id_alumno";
+    public static final String HELP_OBTENERDETALLEINSCRIPCION = "Obtener Detalle de Inscripciones!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar el detalle de grupos de las boletas de inscripcion registradas\n"
+            + "en el sistema, de un alumno, se debe enviar el id de la boleta";
+    public static final String HELP_OBTENERCURSOSHABILITADOS = "Obtener Cursos Habilitados!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los cursos habilitados para inscribir por el alumno\n"
+            + "se debe enviar el id_alumno";
+    public static final String HELP_REGISTRARINSCRIPCION = "Registrar Inscripcion!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar una inscripcion en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- fecha_inscripcion (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- id_alumno (Entero)";
+    public static final String HELP_MODIFICARINSCRIPCION = "Modificar Inscripcion!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar una inscripcion en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- fecha_inscripcion (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- id_alumno (Entero)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "fecha_inscripcion, id_alumno";
+    public static final String HELP_ADICIONARGRUPOS = "Adicionar Grupos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es adicionar grupos a la boleta de inscripcion en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- id_grupo (Entero)\n"
+            + "- mes (Entero)\n"
+            + "- gestion (Entero)\n"
+            + "- id_alumno (Entero)";
+    public static final String HELP_RETIRARGRUPOS = "Retirar Grupos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es retirar grupos a la boleta de inscripcion en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- id_grupo (Entero)\n"
+            + "- mes (Entero)\n"
+            + "- gestion (Entero)\n"
+            + "- id_alumno (Entero)";
+    public static final String HELP_OBTENERCURSOS = "Obtener Cursos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los cursos registrados en el sistema,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_OBTENERPREREQUISITOS = "Obtener Prerequisitos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los prerequisitos de cursos registrados en el sistema,\n"
+            + "es necesario enviar el 'id' del curso";
+    public static final String HELP_REGISTRARCURSO = "Registrar Curso!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un curso en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- descripcion (String con Comillas Dobles)\n"
+            + "- estado (true, false)";
+    public static final String HELP_MODIFICARCURSO = "Modificar Curso!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un curso en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- descripcion (String con Comillas Dobles)\n"
+            + "- estado (true, false)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "nombre, descripcion, estado";
+    public static final String HELP_OBTENERGRUPOS = "Obtener Grupos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los grupos registrados en el sistema,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_OBTENERHORARIOS = "Obtener Horarios!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los horarios registrados de los grupo en el sistema,\n"
+            + "se debe enviar el id_grupo";
+    public static final String HELP_REGISTRARGRUPO = "Registrar Grupo!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un grupo en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- id_curso (Entero)";
+    public static final String HELP_MODIFICARGRUPO = "Modificar Grupo!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un grupo en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- id_curso (Entero)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "nombre, id_curso";
+    public static final String HELP_ASIGNARGRUPO = "Asignar Grupo!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es asignar los grupos a profesores registrados en el sistema,\n"
+            + "se debe enviar el id_grupo seguido del id_profesor";
+    public static final String HELP_REGISTRARHORARIO = "Registrar Horario!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un horario de un grupo en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id_grupo (Entero)\n"
+            + "- dia (String con Comillas Dobles)\n"
+            + "- hora_inicio (String con Comillas Dobles) [\"hh:mm\"]\n"
+            + "- hora_fin (String con Comillas Dobles) [\"hh:mm\"]\n"
+            + "- id_aula (Entero)";
+    public static final String HELP_MODIFICARHORARIO = "Modificar Horario!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un profesor en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id_grupo (Entero)\n"
+            + "- id (Entero)\n"
+            + "- dia (String con Comillas Dobles)\n"
+            + "- hora_inicio (String con Comillas Dobles) [\"hh:mm\"]\n"
+            + "- hora_fin (String con Comillas Dobles) [\"hh:mm\"]\n"
+            + "- id_aula (Entero)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "dia, hora_inicio, hora_fin, id_aula";
+    public static final String HELP_ELIMINARHORARIO = "Eliminar Horario!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es eliminar los horarios registrados en el sistema,\n"
+            + "se debe enviar el id del horario y su id_grupo";
+    public static final String HELP_OBTENERAULAS = "Obtener Aulas!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar las aulas registrados en el sistema,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_REGISTRARAULA = "Registrar Aula!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar a un aula en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- capacidad (Entero)";
+    public static final String HELP_MODIFICARAULA = "Modificar Aula!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar a un profesor en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- nombre (String con Comillas Dobles)\n"
+            + "- capacidad (Entero)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "nombre, capacidad";
+    public static final String HELP_OBTENERKARDEXS = "Obtener Kardexs!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los kardex de un alumno,\n"
+            + "se debe de enviar el id del alumno";
+    public static final String HELP_OBTENERASISTENCIAS = "Obtener Asistencias!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar las asistencias de una alumno en un grupo mediante su kardex,\n"
+            + "se necesita enviar el id de su kardex del alumno";
+    public static final String HELP_REGISTRARASISTENCIAS = "Registrar Asistencias!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar una asistencia en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- estado (String con Comillas Dobles) [\"P\", \"A\"]\n"
+            + "- fecha (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- id_kardex (Entero)";
+    public static final String HELP_MODIFICARASISTENCIAS = "Modificar Asistencias!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es modificar una asistencia en el sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id (Entero)\n"
+            + "- estado (String con Comillas Dobles) [\"P\", \"A\"]\n"
+            + "- fecha (String con Comillas Dobles) [\"dd-mm-aaaa\"]\n"
+            + "- id_kardex (Entero)\n"
+            + "\n"
+            + "OPCIONALES: (Usar guion bajo \"_\" para decir no cambiar)\n"
+            + "\n"
+            + "estado, fecha, id_kardex";
+    public static final String HELP_REGISTRARNOTA = "Registrar Nota!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es registrar una nota en un kardex del sistema.\n"
+            + "\n"
+            + "PARAMETROS:\n"
+            + "\n"
+            + "- id_kardex (Entero)\n"
+            + "- nota (String con Comillas Dobles) [\"A\",\"R\"]";
+    public static final String HELP_REPORTEHISTORICO = "Reporte Historico!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los cursos ya inscritos con su nota respectiva,\n"
+            + "se debe enviar el id de alumno";
+    public static final String HELP_REPORTEALUMNOSINSCRITOS = "Reporte Alumnos Inscritos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar los alumnos inscritos en un grupo en un determinada gestion,\n"
+            + "se necesita enviar datos de: id_grupo, mes y gestion";
+    public static final String HELP_REPORTEOFERTACURSOS = "Reporte Oferta de Cursos!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es listar la oferta de cursos disponibles,\n"
+            + "no es necesario enviar ningun parametros";
+    public static final String HELP_AGREGARPREREQUISITO = "Agregar Prerequisito!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es agregar un prerequisito a un curso.\n"
+            + "Sus parametros son: id_curso y id_prerequisito";
+    public static final String HELP_QUITARPREREQUISITO = "Quitar Prerequisito!!!\n"
+            + "\n"
+            + "Lo que hace el siguiente comando es quitar un prerequisito a un curso.\n"
+            + "Sus parametros son: id_curso y id_prerequisito";
 }
