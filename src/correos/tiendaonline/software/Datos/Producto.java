@@ -23,15 +23,11 @@ public class Producto {
         this.m_Conexion = Conexion.getInstancia();
     }
 
-    public void setProducto(int id, int id_categoria, String nombre, String descripcion, 
-                            byte[] foto1, byte[] foto2, byte[] video, float precio) {
+    public void setProducto(int id, int id_categoria, String nombre, String descripcion,float precio) {
         this.id = id;
         this.id_categoria = id_categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.foto1 = foto1;
-        this.foto2 = foto2;
-        this.video = video;
         this.precio = precio;
     }
     
@@ -81,7 +77,7 @@ public class Producto {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel producto = new DefaultTableModel();
         producto.setColumnIdentifiers(new Object[]{
-            "id", "nombre", "apellido"
+            "id","id_categoria", "nombre", "descripcion","precio"
         });
 
         // Abro y obtengo la conexion
@@ -94,11 +90,8 @@ public class Producto {
                 + "productos.id_categoria,\n"
                 + "productos.nombre\n"
                 + "productos.descripcion\n"
-                + "productos.foto1\n"
-                + "productos.foto2\n"
-                + "productos.video\n"
                 + "productos.precio\n"
-                + "FROM persona\n"
+                + "FROM productos\n"
                 + "WHERE productos.id=?";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
@@ -120,9 +113,6 @@ public class Producto {
                     rs.getInt("id_categoria"),
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
-                    rs.getBytes("foto1"),
-                    rs.getBytes("foto2"),
-                    rs.getBytes("video"),
                     rs.getFloat("precio")
                 });
             }
@@ -138,7 +128,7 @@ public class Producto {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel productos = new DefaultTableModel();
         productos.setColumnIdentifiers(new Object[]{
-            "id","id_categoria", "nombre", "descripcion","foto1","foto2","video","precio"
+            "id","id_categoria", "nombre", "descripcion","precio"
         });
 
         // Abro y obtengo la conexion
@@ -150,9 +140,6 @@ public class Producto {
                 + "productos.id_categoria,\n"
                 + "productos.nombre\n"
                 + "productos.descripcion\n"
-                + "productos.foto1\n"
-                + "productos.foto2\n"
-                + "productos.video\n"
                 + "productos.precio\n"
                 + "FROM productos";
 
@@ -172,9 +159,6 @@ public class Producto {
                     rs.getInt("id_categoria"),
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
-                    rs.getBytes("foto1"),
-                    rs.getBytes("foto2"),
-                    rs.getBytes("video"),
                     rs.getFloat("precio")
                 });
             }
@@ -235,10 +219,10 @@ public class Producto {
 
         // Preparo la consulta
         String sql = "UPDATE productos SET\n"
-                + "nombre = ?,\n"
-                + "descripcion = ?,\n"
-                + "id_categoria = ?,\n"
-                + "precio = ?,\n"
+                + "productos.nombre = ?,\n"
+                + "productos.descripcion = ?,\n"
+                + "productos.id_categoria = ?,\n"
+                + "productos.precio = ?,\n"
                 + "WHERE productos.id = ?";
         try {
             // La ejecuto
@@ -247,6 +231,7 @@ public class Producto {
             ps.setString(2, this.descripcion);
             ps.setInt(3, this.id_categoria);
             ps.setFloat(4, this.precio);
+            ps.setInt(5, this.id);
             int rows = ps.executeUpdate();
 
             // Cierro la conexion
