@@ -29,7 +29,7 @@ public class ProductoNegocio {
         return this.m_Producto.registrarProducto();
     }
     public void modificarProducto(int id, int id_categoria, String nombre, String descripcion,float precio) {
-        this.m_Producto.setProducto(id_categoria, nombre,descripcion,precio);
+        this.m_Producto.setProducto(id,id_categoria, nombre,descripcion,precio);
         this.m_Producto.modificarProducto();
     }
         

@@ -30,10 +30,10 @@ import javax.swing.table.DefaultTableModel;
  * @author mauriballes
  */
 public class NuevaAcropolisMail {
-
+    
     public void processMessage(String Message) {
 //[12:27 PM, 10/14/2017] Paul Grimaldo: // Setteando Variables
-       // System.out.println("Class Acropolis:processMessage:Message " + Message);
+        // System.out.println("Class Acropolis:processMessage:Message " + Message);
         String destinatario = Utils.getDestinatario(Message);
         String content = Utils.getSubjectOrden(Message);
         System.out.println("Class Acropolis:processMessage:Content " + content);
@@ -53,10 +53,10 @@ public class NuevaAcropolisMail {
         // Si todo va bien, procesar el Comando
         analex.Init();
         Token token = analex.Preanalisis();
-
+        
         if (token.getNombre() == Token.HELP) {
             // Mostrar Ayudas
-            ClienteSMTP.sendMail(destinatario, "Ayudas - Nueva Acropolis Mail", Helper.HELP_GLOBAL);
+            ClienteSMTP.sendMail(destinatario, "Ayudas - mitiendaonline", Helper.HELP_GLOBAL);
             return;
         }
 
@@ -67,12 +67,17 @@ public class NuevaAcropolisMail {
                 break;
             case Token.REGISTRARPRODUCTO:
                 registrarProducto(analex, destinatario);
-                break; 
+                break;
+            case Token.MODIFICARPRODUCTO:
+                modificarProducto(analex, destinatario);
+                break;
+         case Token.OBTENERPRODUCTOS:
+                obtenerProductos(analex, destinatario);
+                break;
         }
     }
     
-
-        public void registrarProducto(AnalizadorLex analex, String correoDest) {
+     public void obtenerClients(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
@@ -81,7 +86,93 @@ public class NuevaAcropolisMail {
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
             // Enviar correo con la ayuda
-            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_REGISTRARALUMNO);
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+
+        // Sino, ejecutar el comando
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        String message = Utils.dibujarTabla(productoNegocio.obtenerProductos());
+        ClienteSMTP.sendMail(correoDest, "Obtener Clientes", message);
+    }   
+    
+    public void obtenerProductos(AnalizadorLex analex, String correoDest) {
+        // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+
+        // Sino, ejecutar el comando
+        ClienteNegocio clienteNegocio = new ClienteNegocio();
+        String message = Utils.dibujarTabla(clienteNegocio.obtenerClientes());
+        ClienteSMTP.sendMail(correoDest, "Obtener Clientes", message);
+    }
+    
+    public void modificarProducto(AnalizadorLex analex, String correoDest) {
+        // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_MODIFICARALUMNO);
+            return;
+        }
+
+        // Sino, ejecutar el comando
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel producto = productoNegocio.obtenerProducto(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_categoria = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                : Integer.parseInt(String.valueOf(producto.getValueAt(0, 1)));
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombre = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(producto.getValueAt(0, 2));
+        analex.Avanzar();
+        analex.Avanzar();
+        String descripcion = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(producto.getValueAt(0, 3));
+        analex.Avanzar();
+        analex.Avanzar();
+        float precio = (analex.Preanalisis().getNombre() != Token.GB)
+                ? analex.Preanalisis().getAtributo()
+                //: Integer.parseInt(String.valueOf(producto.getValueAt(0, 4)));
+        : ((float) producto.getValueAt(0, 4));
+        //float precio = analex.Preanalisis().getAtributo();
+       // analex.Avanzar();
+      //  analex.Avanzar();
+        productoNegocio.modificarProducto(id, id_categoria, nombre, descripcion,precio);
+        ClienteSMTP.sendMail(correoDest, "Modificar producto", "Modificacion realizada Correctamente");
+    }
+    
+    public void registrarProducto(AnalizadorLex analex, String correoDest) {
+        // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARALUMNO);
             return;
         }
 
@@ -90,7 +181,7 @@ public class NuevaAcropolisMail {
         analex.Avanzar();
         // Atributos
         // public int registrarCliente(String nombre, String apellido, int id_user, String email, String pass, int tipo, String telefono, String direccion, int id_persona)
-      int id_categoria = analex.Preanalisis().getAtributo();
+        int id_categoria = analex.Preanalisis().getAtributo();
         analex.Avanzar();
         analex.Avanzar();
         String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
@@ -100,12 +191,12 @@ public class NuevaAcropolisMail {
         analex.Avanzar();
         analex.Avanzar();
         float precio = analex.Preanalisis().getAtributo();
-
+        
         productoNegocio.registrarProducto(id_categoria, nombre, descripcion, precio);
         ClienteSMTP.sendMail(correoDest, "Registrar Producto", "Registro realizado Correctamente");
-
+        
     }
-
+    
     public void registrarCliente(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -151,9 +242,9 @@ public class NuevaAcropolisMail {
         int id_persona = analex.Preanalisis().getAtributo();
         clienteNegocio.registrarCliente(nombre, apellido, id_user, email, pass, tipo, telefono, direccion, id_persona);
         ClienteSMTP.sendMail(correoDest, "Registrar Cliente", "Registro realizado Correctamente");
-
+        
     }
-
+    
     public void obtenerAlumnos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -172,7 +263,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(alumnoNegocio.obtenerAlumnos());
         ClienteSMTP.sendMail(correoDest, "Obtener Alumnos", message);
     }
-
+    
     public void registrarAlumno(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -208,9 +299,9 @@ public class NuevaAcropolisMail {
         boolean estado = analex.Preanalisis().getNombre() == Token.TRUE;
         alumnoNegocio.registrarAlumno(nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
         ClienteSMTP.sendMail(correoDest, "Registrar Alumno", "Registro realizado Correctamente");
-
+        
     }
-
+    
     public void modificarAlumno(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -261,10 +352,11 @@ public class NuevaAcropolisMail {
         boolean estado = (analex.Preanalisis().getNombre() != Token.GB)
                 ? (analex.Preanalisis().getNombre() == Token.TRUE)
                 : Boolean.valueOf(String.valueOf(alumno.getValueAt(0, 6)));
+        
         alumnoNegocio.modificarAlumno(id, nombres, apellidos, telefono, fecha_nacimiento, fecha_ingreso, estado);
         ClienteSMTP.sendMail(correoDest, "Modificar Alumno", "Modificacion realizada Correctamente");
     }
-
+    
     public void registrarProfesor(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -298,7 +390,7 @@ public class NuevaAcropolisMail {
         profesorNegocio.registrarProfesor(nombres, apellidos, telefono, fecha_postulacion, estado);
         ClienteSMTP.sendMail(correoDest, "Registrar Profesor", "Registro realizado Correctamente");
     }
-
+    
     public void modificarProfesor(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -347,7 +439,7 @@ public class NuevaAcropolisMail {
         profesorNegocio.modificarProfesor(id, nombres, apellidos, telefono, fecha_postulacion, estado);
         ClienteSMTP.sendMail(correoDest, "Modificar Profesor", "Modificacion realizada Correctamente");
     }
-
+    
     public void obtenerProfesores(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -366,7 +458,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(profesorNegocio.obtenerProfesores());
         ClienteSMTP.sendMail(correoDest, "Obtener Profesores", message);
     }
-
+    
     public void obtenerInscripciones(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -387,7 +479,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(inscripcionNegocio.obtenerInscripciones(id_alumno));
         ClienteSMTP.sendMail(correoDest, "Obtener Inscripciones", message);
     }
-
+    
     public void obtenerDetalleInscripcion(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -408,7 +500,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(inscripcionNegocio.obtenerDetalleInscripcion(id));
         ClienteSMTP.sendMail(correoDest, "Obtener Detalle Inscripcion", message);
     }
-
+    
     public void obtenerCursosHabilitados(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -429,7 +521,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(inscripcionNegocio.obtenerCursosHabilitados(id_alumno));
         ClienteSMTP.sendMail(correoDest, "Obtener Cursos Habilitados", message);
     }
-
+    
     public void registrarInscripcion(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -454,7 +546,7 @@ public class NuevaAcropolisMail {
         inscripcionNegocio.registrarInscripcion(fecha_inscripcion, id_alumno);
         ClienteSMTP.sendMail(correoDest, "Registrar Inscripcion", "Registro realizado Correctamente");
     }
-
+    
     public void modificarInscripcion(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -488,7 +580,7 @@ public class NuevaAcropolisMail {
         inscripcionNegocio.modificarInscripcion(id, fecha_inscripcion, id_alumno);
         ClienteSMTP.sendMail(correoDest, "Modificar Inscripcion", "Modificacion realizada Correctamente");
     }
-
+    
     public void adicionarGrupos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -523,7 +615,7 @@ public class NuevaAcropolisMail {
         kardexNegocio.registrarKardex(mes, gestion, id_alumno, id_grupo);
         ClienteSMTP.sendMail(correoDest, "Adicionar Grupo", "Registro realizado Correctamente");
     }
-
+    
     public void retirarGrupos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -558,7 +650,7 @@ public class NuevaAcropolisMail {
         kardexNegocio.eliminarKardex(id_alumno, id_grupo, mes, gestion);
         ClienteSMTP.sendMail(correoDest, "Retirar Grupo", "Eliminacion realizada Correctamente");
     }
-
+    
     public void obtenerCursos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -577,7 +669,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(cursoNegocio.obtenerCursos());
         ClienteSMTP.sendMail(correoDest, "Obtener Cursos", message);
     }
-
+    
     public void obtenerPrerequisitos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -598,7 +690,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(cursoNegocio.obtenerPrerequisitos(id));
         ClienteSMTP.sendMail(correoDest, "Obtener Prerequisitos", message);
     }
-
+    
     public void registrarCurso(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -626,7 +718,7 @@ public class NuevaAcropolisMail {
         cursoNegocio.registrarCurso(nombre, descripcion, estado);
         ClienteSMTP.sendMail(correoDest, "Registrar Curso", "Registro realizado Correctamente");
     }
-
+    
     public void modificarCurso(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -665,7 +757,7 @@ public class NuevaAcropolisMail {
         cursoNegocio.modificarCurso(id, nombre, descripcion, estado);
         ClienteSMTP.sendMail(correoDest, "Modificar Curso", "Modificacion realizada Correctamente");
     }
-
+    
     public void obtenerGrupos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -684,7 +776,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(grupoNegocio.obtenerGrupos());
         ClienteSMTP.sendMail(correoDest, "Obtener Grupos", message);
     }
-
+    
     public void obtenerHorarios(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -705,7 +797,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(grupoNegocio.obtenerHorarios(id_grupo));
         ClienteSMTP.sendMail(correoDest, "Obtener Horarios", message);
     }
-
+    
     public void registrarGrupo(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -730,7 +822,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.registrarGrupo(nombre, id_curso);
         ClienteSMTP.sendMail(correoDest, "Registrar Grupo", "Registro realizado Correctamente");
     }
-
+    
     public void modificarGrupo(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -764,7 +856,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.modificarGrupo(id, nombre, id_curso);
         ClienteSMTP.sendMail(correoDest, "Modificar Grupo", "Modificacion realizada Correctamente");
     }
-
+    
     public void asignarGrupo(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -788,7 +880,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.asignarGrupo(id_grupo, id_profesor);
         ClienteSMTP.sendMail(correoDest, "Asignar Grupo", "Profesor Asignado Correctamente");
     }
-
+    
     public void registrarHorario(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -822,7 +914,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.registrarHorario(id_grupo, dia, hora_inicio, hora_fin, id_aula);
         ClienteSMTP.sendMail(correoDest, "Registrar Horario", "Registro realizado Correctamente");
     }
-
+    
     public void modificarHorario(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -869,7 +961,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.modificarHorario(id_grupo, id, dia, hora_inicio, hora_fin, id_aula);
         ClienteSMTP.sendMail(correoDest, "Modificar Horario", "Modificacion realizada Correctamente");
     }
-
+    
     public void eliminarHorario(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -893,7 +985,7 @@ public class NuevaAcropolisMail {
         grupoNegocio.eliminarHorario(id, id_grupo);
         ClienteSMTP.sendMail(correoDest, "Eliminar Horario", "Eliminacion Completada Satisfactoriamente");
     }
-
+    
     public void obtenerAulas(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -912,7 +1004,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(aulaNegocio.obtenerAulas());
         ClienteSMTP.sendMail(correoDest, "Obtener Aulas", message);
     }
-
+    
     public void registrarAula(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -937,7 +1029,7 @@ public class NuevaAcropolisMail {
         aulaNegocio.registrarAula(nombre, capacidad);
         ClienteSMTP.sendMail(correoDest, "Registrar Aula", "Registro realizado Correctamente");
     }
-
+    
     public void modificarAula(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -971,7 +1063,7 @@ public class NuevaAcropolisMail {
         aulaNegocio.modificarAula(id, nombre, capacidad);
         ClienteSMTP.sendMail(correoDest, "Modificar Aula", "Modificacion Realizada Correctamente");
     }
-
+    
     public void obtenerKardexs(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -992,7 +1084,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(kardexNegocio.obtenerKardexs(id_alumno));
         ClienteSMTP.sendMail(correoDest, "Obtener Kardexs", message);
     }
-
+    
     public void registrarAsistencias(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1020,7 +1112,7 @@ public class NuevaAcropolisMail {
         kardexNegocio.registrarAsistencia(estado, fecha, id_kardex);
         ClienteSMTP.sendMail(correoDest, "Registrar Asistencia", "Registro realizado Correctamente");
     }
-
+    
     public void modificarAsistencias(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1059,7 +1151,7 @@ public class NuevaAcropolisMail {
         kardexNegocio.modificarAsistencia(id, estado, fecha, id_kardex);
         ClienteSMTP.sendMail(correoDest, "Modificar Asistencia", "Modificacion Realizada Correctamente");
     }
-
+    
     public void obtenerAsistencias(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1080,7 +1172,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(kardexNegocio.obtenerAsistencias(id_kardex));
         ClienteSMTP.sendMail(correoDest, "Obtener Asistencias", message);
     }
-
+    
     public void registrarNota(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1105,7 +1197,7 @@ public class NuevaAcropolisMail {
         kardexNegocio.registrarNota(id, nota);
         ClienteSMTP.sendMail(correoDest, "Registrar Nota", "Registro realizado Correctamente");
     }
-
+    
     public void reporteHistorico(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1126,7 +1218,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(reporteNegocio.reporteHistorico(id_alumno));
         ClienteSMTP.sendMail(correoDest, "Reporte Historico", message);
     }
-
+    
     public void reporteAlumnosInscritos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1153,7 +1245,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(reporteNegocio.reporteAlumnosInscritos(id_grupo, mes, gestion));
         ClienteSMTP.sendMail(correoDest, "Reporte Alumnos Inscritos", message);
     }
-
+    
     public void reporteOfertaCursos(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1172,7 +1264,7 @@ public class NuevaAcropolisMail {
         String message = Utils.dibujarTabla(reporteNegocio.reporteOfertaCursos());
         ClienteSMTP.sendMail(correoDest, "Reporte Oferta de Cursos", message);
     }
-
+    
     public void agregarPrerequisito(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
@@ -1196,7 +1288,7 @@ public class NuevaAcropolisMail {
         cursoNegocio.agregarPrerequisito(id_curso, id_prerequisito);
         ClienteSMTP.sendMail(correoDest, "Agregar Prerequisito", "Se han agregado los prerequisitos de manera correcta");
     }
-
+    
     public void quitarPrerequisito(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();

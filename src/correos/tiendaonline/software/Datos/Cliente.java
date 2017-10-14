@@ -79,7 +79,7 @@ public class Cliente {
         String sql = "SELECT\n"
                 + "clientes.id,\n"
                 + "clientes.telefono,\n"
-                + "clientes.direccion\n"
+                + "clientes.direccion,\n"
                 + "clientes.id_persona\n"
                 + "FROM clientes\n"
                 + "WHERE clientes.id=?";
@@ -126,7 +126,7 @@ public class Cliente {
         String sql = "SELECT\n"
          + "clientes.id,\n"
          + "clientes.telefono,\n"
-         + "clientes.direccion\n"
+         + "clientes.direccion,\n"
          + "clientes.id_persona\n"
          + "FROM clientes";
 

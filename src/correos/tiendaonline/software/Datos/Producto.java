@@ -1,4 +1,3 @@
-
 package correos.tiendaonline.software.Datos;
 
 import java.sql.Connection;
@@ -13,9 +12,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Mauricio
  */
 public class Producto {
-    int id,id_categoria;
-    String nombre,descripcion;
-    byte[] foto1,foto2,video;
+
+    int id, id_categoria;
+    String nombre, descripcion;
+    byte[] foto1, foto2, video;
     float precio;
     Conexion m_Conexion;
 
@@ -23,24 +23,21 @@ public class Producto {
         this.m_Conexion = Conexion.getInstancia();
     }
 
-    public void setProducto(int id, int id_categoria, String nombre, String descripcion,float precio) {
+    public void setProducto(int id, int id_categoria, String nombre, String descripcion, float precio) {
         this.id = id;
         this.id_categoria = id_categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
     }
-    
-  
-        public void setProducto(int id_categoria, String nombre, String descripcion, float precio) {
+
+    public void setProducto(int id_categoria, String nombre, String descripcion, float precio) {
         this.id_categoria = id_categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
     }
 
-    
-    
     public void setId(int id) {
         this.id = id;
     }
@@ -72,12 +69,12 @@ public class Producto {
     public void setPrecio(float precio) {
         this.precio = precio;
     }
-    
-     public DefaultTableModel getProducto(int id) {
+
+    public DefaultTableModel getProducto(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel producto = new DefaultTableModel();
         producto.setColumnIdentifiers(new Object[]{
-            "id","id_categoria", "nombre", "descripcion","precio"
+            "id", "id_categoria", "nombre", "descripcion", "precio"
         });
 
         // Abro y obtengo la conexion
@@ -88,8 +85,8 @@ public class Producto {
         String sql = "SELECT\n"
                 + "productos.id,\n"
                 + "productos.id_categoria,\n"
-                + "productos.nombre\n"
-                + "productos.descripcion\n"
+                + "productos.nombre,\n"
+                + "productos.descripcion,\n"
                 + "productos.precio\n"
                 + "FROM productos\n"
                 + "WHERE productos.id=?";
@@ -121,14 +118,12 @@ public class Producto {
         }
         return producto;
     }
-     
- 
 
     public DefaultTableModel getProductos() {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel productos = new DefaultTableModel();
         productos.setColumnIdentifiers(new Object[]{
-            "id","id_categoria", "nombre", "descripcion","precio"
+            "id", "id_categoria", "nombre", "descripcion", "precio"
         });
 
         // Abro y obtengo la conexion
@@ -138,8 +133,8 @@ public class Producto {
         String sql = "SELECT\n"
                 + "productos.id,\n"
                 + "productos.id_categoria,\n"
-                + "productos.nombre\n"
-                + "productos.descripcion\n"
+                + "productos.nombre,\n"
+                + "productos.descripcion,\n"
                 + "productos.precio\n"
                 + "FROM productos";
 
@@ -167,9 +162,8 @@ public class Producto {
         }
         return productos;
     }
-    
-    
-     public int registrarProducto() {
+
+    public int registrarProducto() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
@@ -186,9 +180,9 @@ public class Producto {
             // es bueno cuando nuestra bd tiene las primarias autoincrementables
             ps.setString(1, this.nombre);
             ps.setString(2, this.descripcion);
-           // ps.setBytes(3, this.foto1);
-           // ps.setBytes(4, this.foto2);
-           // ps.setBytes(5, this.video);
+            // ps.setBytes(3, this.foto1);
+            // ps.setBytes(4, this.foto2);
+            // ps.setBytes(5, this.video);
             ps.setInt(3, this.id_categoria);
             ps.setFloat(4, this.precio);
 
@@ -209,21 +203,22 @@ public class Producto {
         }
         return 0;
     }
-     
-     
-     
-      public void modificarProducto() {
+
+    public void modificarProducto() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
 
         // Preparo la consulta
-        String sql = "UPDATE productos SET\n"
-                + "productos.nombre = ?,\n"
-                + "productos.descripcion = ?,\n"
-                + "productos.id_categoria = ?,\n"
-                + "productos.precio = ?,\n"
+        String sql = "UPDATE productos SET \n"
+                + "nombre = ?,\n"
+                + "descripcion = ?,\n"
+                + "id_categoria = ?,\n"
+                + "precio = ? \n"
                 + "WHERE productos.id = ?";
+        System.out.println(sql);
+        System.out.println(toString());
+
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
@@ -240,5 +235,16 @@ public class Producto {
             System.out.println(ex.getMessage());
         }
     }
-    
+
+    @Override
+    public String toString() {
+        return "Producto:\n"
+                + "{id=" + this.id + "\n"
+                + "nombre=" + this.nombre + "\n"
+                + "descripcion=" + this.descripcion + "\n"
+                + "id_categoria=" + this.id_categoria + "\n"
+                + "precio=" + this.precio + "\n"
+                + "}";
+    }
+
 }
