@@ -154,19 +154,19 @@ public class User {
         Connection con = this.m_Conexion.getConexion();
 
         // Preparo la consulta
-        String sql = "INSERT INTO user(\n"
-                + "email,id_persona,tipo,password)\n"
-                + "VALUES(?,?,?,?)";
+        String sql = "INSERT INTO usuarios(\n"
+                + "id,email,id_persona,tipo,password)\n"
+                + "VALUES(?,?,?,?,?)";
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // El segundo parametro de usa cuando se tienen tablas que generan llaves primarias
             // es bueno cuando nuestra bd tiene las primarias autoincrementables
-  
-            ps.setString(1, this.email);
-            ps.setInt(2, this.id_persona);
-            ps.setInt(3, this.tipo);
-            ps.setString(4, this.password);
+            ps.setInt(1, this.id);
+            ps.setString(2, this.email);
+            ps.setInt(3, this.id_persona);
+            ps.setInt(4, this.tipo);
+            ps.setString(5, this.password);
            
             int rows = ps.executeUpdate();
 
