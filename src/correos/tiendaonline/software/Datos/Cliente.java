@@ -68,7 +68,7 @@ public class Cliente {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel cliente = new DefaultTableModel();
         cliente.setColumnIdentifiers(new Object[]{
-            "id", "telefono", "direccion", "id_persona"
+            "id","nombre","apellido", "telefono", "direccion", "id_persona"
         });
 
         // Abro y obtengo la conexion
@@ -78,11 +78,14 @@ public class Cliente {
         // Preparo la consulta
         String sql = "SELECT\n"
                 + "clientes.id,\n"
+                + "persona.nombre,\n"
+                + "persona.apellido,\n"
                 + "clientes.telefono,\n"
                 + "clientes.direccion,\n"
                 + "clientes.id_persona\n"
-                + "FROM clientes\n"
-                + "WHERE clientes.id=?";
+                + "FROM clientes,persona\n"
+                + "WHERE clientes.id_persona=persona.id\n"
+                + "AND clientes.id=?";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
 
@@ -100,6 +103,8 @@ public class Cliente {
                 // Agrego las tuplas a mi tabla
                 cliente.addRow(new Object[]{
                     rs.getInt("id"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
                     rs.getString("telefono"),
                     rs.getString("direccion"),
                     rs.getInt("id_persona")
@@ -116,7 +121,7 @@ public class Cliente {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel clientes = new DefaultTableModel();
         clientes.setColumnIdentifiers(new Object[]{
-            "id", "telefono", "direccion","id_persona"
+            "id","nombre","apellido", "telefono", "direccion","id_persona"
         });
 
         // Abro y obtengo la conexion
@@ -125,11 +130,16 @@ public class Cliente {
         // Preparo la consulta
         String sql = "SELECT\n"
          + "clientes.id,\n"
+         + "persona.nombre,\n"
+         + "persona.apellido,\n"
          + "clientes.telefono,\n"
          + "clientes.direccion,\n"
          + "clientes.id_persona\n"
-         + "FROM clientes";
-
+         + "FROM clientes,persona\n"
+      + "WHERE clientes.id_persona=persona.id";
+        
+        
+        
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
@@ -143,6 +153,8 @@ public class Cliente {
                 // Agrego las tuplas a mi tabla
                 clientes.addRow(new Object[]{
                     rs.getInt("id"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
                     rs.getString("telefono"),
                     rs.getString("direccion"),
                     rs.getInt("id_persona")
@@ -200,16 +212,14 @@ public class Cliente {
         // Preparo la consulta
         String sql = "UPDATE clientes SET\n"
                 + "telefono = ?,\n"
-                + "direccion = ?,\n"
-                + "id_persona = ?,\n"
+                + "direccion = ?\n"
                 + "WHERE clientes.id = ?";
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, this.telefono);
             ps.setString(2, this.direccion);
-            ps.setInt(3, this.id_persona);
-            ps.setInt(4, this.id);
+            ps.setInt(3, this.id);
             int rows = ps.executeUpdate();
 
             // Cierro la conexion

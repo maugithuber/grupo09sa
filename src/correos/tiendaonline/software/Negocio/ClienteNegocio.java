@@ -40,6 +40,9 @@ public class ClienteNegocio {
         this.m_user.registrarUser();
         return this.m_Cliente.registrarCliente();
     }
-
+    public void modificarCliente(int id, String telefono , String direccion) {
+         this.m_Cliente.setCliente(id,telefono ,direccion );
+          this.m_Cliente.modificarCliente();
+    }
   
 }

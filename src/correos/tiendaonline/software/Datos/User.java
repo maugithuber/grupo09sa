@@ -62,9 +62,9 @@ public class User {
 
     public DefaultTableModel getUser(int id) {
         // Tabla para mostrar lo obtenido de la consulta
-        DefaultTableModel user = new DefaultTableModel();
-        user.setColumnIdentifiers(new Object[]{
-            "id", "nombre", "apellido"
+        DefaultTableModel usuario = new DefaultTableModel();
+        usuario.setColumnIdentifiers(new Object[]{
+              "id", "tipo", "id_persona","email","password"
         });
 
         // Abro y obtengo la conexion
@@ -73,11 +73,13 @@ public class User {
 
         // Preparo la consulta
         String sql = "SELECT\n"
-                + "persona.id,\n"
-                + "persona.nombre,\n"
-                + "persona.apellido\n"
-                + "FROM persona\n"
-                + "WHERE persona.id=?";
+                  + "users.id,\n"
+                + "usuarios.tipo,\n"
+                + "usuarios.id_persona,\n"
+                + "usuarios.email,\n"
+                + "usuarios.password\n"
+                + "FROM usuarios"
+                + "WHERE usuarios.id=?";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
 
@@ -93,15 +95,18 @@ public class User {
             // Recorro el resultado
             while (rs.next()) {
                 // Agrego las tuplas a mi tabla
-                user.addRow(new Object[]{
+                usuario.addRow(new Object[]{
                     rs.getInt("id"),
-                    rs.getString("nombre"),
-                    rs.getString("apellido"),});
+                    rs.getString("tipo"),
+                    rs.getString("id_persona"),
+                    rs.getString("email"),
+                    rs.getString("password")
+                });
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return user;
+        return usuario;
     }
 
     public DefaultTableModel getUsers() {
@@ -116,12 +121,12 @@ public class User {
         Connection con = this.m_Conexion.getConexion();
         // Preparo la consulta
         String sql = "SELECT\n"
-                + "users.id,\n"
-                + "users.tipo,\n"
-                + "users.id_persona\n"
-                + "users.email\n"
-                + "users.password\n"
-                + "FROM users";
+                + "usuarios.id,\n"
+                + "usuarios.tipo,\n"
+                + "usuarios.id_persona\n"
+                + "usuarios.email\n"
+                + "usuarios.password\n"
+                + "FROM usuarios";
 
         try {
             // La ejecuto

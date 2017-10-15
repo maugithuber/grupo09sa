@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,7 +17,7 @@ public class Encargado {
     Conexion m_Conexion;
 
     public Encargado() {
-        this.m_Conexion = m_Conexion;
+        this.m_Conexion = Conexion.getInstancia();
     }
 
     public void setId(int id) {
@@ -32,6 +33,7 @@ public class Encargado {
         this.id_persona = id_persona;
     }
     
+  
       public DefaultTableModel getEncargado(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel encargado = new DefaultTableModel();
@@ -80,7 +82,7 @@ public class Encargado {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel encargados = new DefaultTableModel();
         encargados.setColumnIdentifiers(new Object[]{
-            "id","id_persona"
+            "id","id_persona","nombre","apellido"
         });
 
         // Abro y obtengo la conexion
@@ -89,8 +91,11 @@ public class Encargado {
         // Preparo la consulta
         String sql = "SELECT\n"
          + "encargado.id,\n"
-         + "encargado.id_persona\n"
-         + "FROM clientes";
+         + "encargado.id_persona,\n"
+         + "persona.nombre,\n"
+         + "persona.apellido\n"
+         + "FROM encargado,persona\n"
+         + "WHERE encargado.id_persona=persona.id";
 
         try {
             // La ejecuto
@@ -105,7 +110,9 @@ public class Encargado {
                 // Agrego las tuplas a mi tabla
                 encargados.addRow(new Object[]{
                     rs.getInt("id"),
-                    rs.getInt("id_persona")
+                    rs.getInt("id_persona"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido")
                 });
             }
         } catch (SQLException ex) {
@@ -114,4 +121,41 @@ public class Encargado {
         return encargados;
     }
     
+    
+     public int registrarEncargado() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "INSERT INTO encargado(\n"
+                + "id_persona)\n"
+                + "VALUES(?)";
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            // El segundo parametro de usa cuando se tienen tablas que generan llaves primarias
+            // es bueno cuando nuestra bd tiene las primarias autoincrementables
+  
+            ps.setInt(1, this.id_persona);
+            int rows = ps.executeUpdate();
+
+            // Cierro Conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Obtengo el id generado pra devolverlo
+            if (rows != 0) {
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return 0;
+    }
+    
+ 
 }

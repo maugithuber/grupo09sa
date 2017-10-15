@@ -41,6 +41,8 @@ public class Persona {
         this.apellido = apellido;
     }
     
+ 
+    
     
      public DefaultTableModel getCliente(int id) {
         // Tabla para mostrar lo obtenido de la consulta

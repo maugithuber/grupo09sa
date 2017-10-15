@@ -5,14 +5,18 @@
  */
 package correos.tiendaonline.software;
 
+import correos.tiendaonline.software.Negocio.AulaNegocio;
+import correos.tiendaonline.software.Negocio.ClienteNegocio;
+import correos.tiendaonline.software.Negocio.EncargadoNegocio;
+
+
+
 import correos.tiendaonline.correo.ClienteSMTP;
 import correos.tiendaonline.procesador.AnalizadorLex;
 import correos.tiendaonline.procesador.Cinta;
 import correos.tiendaonline.procesador.Parser;
 import correos.tiendaonline.procesador.Token;
 import correos.tiendaonline.software.Negocio.AlumnoNegocio;
-import correos.tiendaonline.software.Negocio.AulaNegocio;
-import correos.tiendaonline.software.Negocio.ClienteNegocio;
 import correos.tiendaonline.software.Negocio.ProductoNegocio;
 import correos.tiendaonline.software.Negocio.CursoNegocio;
 import correos.tiendaonline.software.Negocio.GrupoNegocio;
@@ -74,11 +78,24 @@ public class NuevaAcropolisMail {
          case Token.OBTENERPRODUCTOS:
                 obtenerProductos(analex, destinatario);
                 break;
+             case Token.MODIFICARCLIENTE:
+                modificarCliente(analex, destinatario);
+                break;
+          case Token.REGISTRARENCARGADO:
+                registrarEncargado(analex, destinatario);
+                break;
+           case Token.OBTENERENCARGADOS:
+                obtenerEncargados(analex, destinatario);
+                break;
+           case Token.DATOSCLIENTE:
+                obtenerCliente(analex, destinatario);
+                break;
         }
     }
     
-     public void obtenerClients(AnalizadorLex analex, String correoDest) {
-        // Obtengo el Siguiente token
+    
+     public void obtenerCliente(AnalizadorLex analex, String correoDest) {
+    // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
 
@@ -91,8 +108,95 @@ public class NuevaAcropolisMail {
         }
 
         // Sino, ejecutar el comando
-        ProductoNegocio productoNegocio = new ProductoNegocio();
-        String message = Utils.dibujarTabla(productoNegocio.obtenerProductos());
+        ClienteNegocio clienteNegocio = new ClienteNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel cliente = clienteNegocio.obtenerCliente(id);
+        
+        String message = Utils.dibujarTabla(clienteNegocio.obtenerCliente(id));
+        ClienteSMTP.sendMail(correoDest, "Obtener Clientes", message);
+    }   
+    
+    
+    public void obtenerEncargados(AnalizadorLex analex, String correoDest){
+     
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+      
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+    
+        EncargadoNegocio encargadoNegocio = new EncargadoNegocio();
+        String message = Utils.dibujarTabla(encargadoNegocio.obtenerEncargados());
+        ClienteSMTP.sendMail(correoDest, "Obtener Encargados", message);
+    }
+            
+            
+    public void registrarEncargado(AnalizadorLex analex, String correoDest) {
+        // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARALUMNO);
+            return;
+        }
+
+        // Sino, ejecutar el comando
+          EncargadoNegocio encargadoNegocio = new EncargadoNegocio();
+        analex.Avanzar();
+        // Atributos
+        // public int registrarCliente(String nombre, String apellido, int id_user, String email, String pass, int tipo, String telefono, String direccion, int id_persona)
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String apellido = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_user = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        String email = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String pass = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        int tipo = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_persona = analex.Preanalisis().getAtributo();
+        encargadoNegocio.registrarEncargado(nombre, apellido, id_user, email, pass, tipo, id_persona);
+        ClienteSMTP.sendMail(correoDest, "Registrar Encargado", "Registro realizado Correctamente");
+        
+    }
+    
+
+
+
+     public void obtenerClients(AnalizadorLex analex, String correoDest) {
+            // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+        
+
+        // Sino, ejecutar el comando
+        ClienteNegocio clienteNegocio = new ClienteNegocio();
+        String message = Utils.dibujarTabla(clienteNegocio.obtenerClientes());
         ClienteSMTP.sendMail(correoDest, "Obtener Clientes", message);
     }   
     
@@ -115,6 +219,43 @@ public class NuevaAcropolisMail {
         ClienteSMTP.sendMail(correoDest, "Obtener Clientes", message);
     }
     
+    
+    
+     public void modificarCliente(AnalizadorLex analex, String correoDest) {
+        // Obtengo el Siguiente token
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        // Reviso si no es ayuda
+        if (token.getNombre() == Token.HELP) {
+            // Mostrar ayuda de esa funcionalidad
+            // Enviar correo con la ayuda
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_MODIFICARALUMNO);
+            return;
+        }
+
+        // Sino, ejecutar el comando
+        ClienteNegocio clienteNegocio = new ClienteNegocio();
+        analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel cliente = clienteNegocio.obtenerCliente(id);
+
+        // Revisar los GuionBajo
+        analex.Avanzar();
+        analex.Avanzar();
+
+        String telefono = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(cliente.getValueAt(0, 2));
+        analex.Avanzar();
+        analex.Avanzar();
+        String direccion = (analex.Preanalisis().getNombre() != Token.GB)
+                ? Utils.quitarComillas(analex.Preanalisis().getToStr())
+                : String.valueOf(cliente.getValueAt(0, 3));
+
+        clienteNegocio.modificarCliente(id, telefono, direccion);
+        ClienteSMTP.sendMail(correoDest, "Modificar producto", "Modificacion realizada Correctamente");
+    }
     public void modificarProducto(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
         analex.Avanzar();
