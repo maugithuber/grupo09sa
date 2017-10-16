@@ -6,7 +6,7 @@
 package correos.tiendaonline;
 
 import correos.tiendaonline.correo.ClientePOP;
-import correos.tiendaonline.software.NuevaAcropolisMail;
+import correos.tiendaonline.software.MiTiendaOnlineMail;
 import correos.tiendaonline.utils.Constants;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,7 +68,7 @@ public class CorreosTecno extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            new NuevaAcropolisMail().processMessage(mensaje);
+            new MiTiendaOnlineMail().processMessage(mensaje);
         }
     }
 

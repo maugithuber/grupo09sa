@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -26,6 +27,12 @@ public class Promocion {
 
     public void setPromocion(int id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin) {
         this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_fin = fecha_fin;
+    }
+     public void setPromocion(String nombre, String descripcion, Date fecha_inicio, Date fecha_fin) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha_inicio = fecha_inicio;
@@ -67,8 +74,8 @@ public class Promocion {
         String sql = "SELECT\n"
                 + "promocion.id,\n"
                 + "promocion.nombre,\n"
-                + "promocion.descripcion\n"
-                + "promocion.fecha_inicio\n"
+                + "promocion.descripcion,\n"
+                + "promocion.fecha_inicio,\n"
                 + "promocion.fecha_fin\n"
                 + "FROM promocion\n"
                 + "WHERE promocion.id=?";
@@ -115,8 +122,8 @@ public class Promocion {
         String sql = "SELECT\n"
                 + "promocion.id,\n"
                 + "promocion.nombre,\n"
-                + "promocion.descripcion\n"
-                + "promocion.fecha_inicio\n"
+                + "promocion.descripcion,\n"
+                + "promocion.fecha_inicio,\n"
                 + "promocion.fecha_fin\n"
                 + "FROM promocion\n";
 
@@ -144,6 +151,77 @@ public class Promocion {
         }
         return zonas;
     }
+    
+        
+    public int registrarPromocion() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "INSERT INTO promocion(\n"
+                + "nombre,descripcion,fecha_inicio,fecha_fin)\n"
+                + "VALUES(?,?,?,?)";
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            // El segundo parametro de usa cuando se tienen tablas que generan llaves primarias
+            // es bueno cuando nuestra bd tiene las primarias autoincrementables
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.descripcion);
+            ps.setDate(3, this.fecha_inicio);
+            ps.setDate(4, this.fecha_fin);
+            int rows = ps.executeUpdate();
+
+            // Cierro Conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Obtengo el id generado pra devolverlo
+            if (rows != 0) {
+                ResultSet generateKeys = ps.getGeneratedKeys();
+                if (generateKeys.next()) {
+                    return generateKeys.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return 0;
+    }
+
+    public void modificarPromocion() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "UPDATE promocion SET \n"
+                + "nombre = ?,\n"
+                + "descripcion = ?,\n"
+                + "fecha_inicio = ?,\n"
+                + "fecha_fin = ?\n"
+                + "WHERE promocion.id = ?";
+        System.out.println(sql);
+        System.out.println(toString());
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.descripcion);
+            ps.setDate(3, this.fecha_inicio);
+            ps.setDate(4, this.fecha_fin);
+            ps.setInt(5, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
     
 
 }
