@@ -24,20 +24,22 @@ public class Token {
     public static final int TRUE = 9;
     public static final int FALSE = 10;
     public static final int HELP = 11;
-    
+
 //Funciones
     public static final int REGISTRARCLIENTE = 100;
-    public static final int MODIFICARCLIENTE =101;  
-    public static final int OBTENERCLIENTES =102;  
-    
-    public static final int REGISTRARPRODUCTO =103;
-    public static final int MODIFICARPRODUCTO =104;
-    public static final int OBTENERPRODUCTOS =105;
-    
-    public static final int REGISTRARENCARGADO =106;
-      public static final int OBTENERENCARGADOS =107;
-      public static final int DATOSCLIENTE =108;
-      
+    public static final int MODIFICARCLIENTE = 101;
+    public static final int OBTENERCLIENTES = 102;
+
+    public static final int REGISTRARPRODUCTO = 103;
+    public static final int MODIFICARPRODUCTO = 104;
+    public static final int OBTENERPRODUCTOS = 105;
+
+    public static final int REGISTRARENCARGADO = 106;
+    public static final int OBTENERENCARGADOS = 107;
+    public static final int DATOSCLIENTE = 108;
+    public static final int REGISTRARORDEN = 109;
+    public static final int MODIFICARORDEN = 110;
+    public static final int ELIMINARORDEN = 111;
 
     private int nombre;
     private int atributo;

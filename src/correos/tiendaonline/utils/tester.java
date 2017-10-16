@@ -22,8 +22,11 @@ public class tester {
         //  m.processMessage("subject:OBTENERPRODUCTOS");
         // m.processMessage("subject:MODIFICARCLIENTE [13,\"6666666\",\"siempre viva\"]");
         //  m.processMessage("subject:REGISTRARENCARGADO [\"alanoca\",\"juarez\",10,\"ala@hotmail.com\",\"66666\",2,34]");
-           //m.processMessage("subject:OBTENERENCARGADOS");
-             //  m.processMessage("subject:OBTENERCLIENTES");
-            //   m.processMessage("subject:DATOSCLIENTE [1]");
+        //m.processMessage("subject:OBTENERENCARGADOS");
+        //  m.processMessage("subject:OBTENERCLIENTES");
+        //   m.processMessage("subject:DATOSCLIENTE [1]");
+        //registrarOrden(int id_orden, int id_cliente, int id_zona, int id_producto, int cantidad)
+        // m.processMessage("subject:REGISTRARORDEN [9,14,1,7,3]");
+        m.processMessage("subject:MODIFICARORDEN [8,14,1,7,3]");
     }
 }

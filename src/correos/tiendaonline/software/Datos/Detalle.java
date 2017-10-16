@@ -42,7 +42,7 @@ public class Detalle {
         this.subtotal = subtotal;
     }
 
-    public DefaultTableModel getDetalle(int id) {
+    public DefaultTableModel getDetalle(int id_orden) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel detalle = new DefaultTableModel();
         detalle.setColumnIdentifiers(new Object[]{
@@ -61,14 +61,14 @@ public class Detalle {
                 + "detalle.cantidad,\n"
                 + "detalle.subtotal\n"
                 + "FROM detalle\n"
-                + "WHERE detalle.id=?";
+                + "WHERE detalle.id_orden=?";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
 
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, this.id_orden);
             ResultSet rs = ps.executeQuery();
 
             // Cierro la conexion
@@ -88,6 +88,38 @@ public class Detalle {
             System.out.println(ex.getMessage());
         }
         return detalle;
+    }
+
+    public void modificarDetalle() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+        /// Obtengo el id del detalle a partir de la orden
+        DefaultTableModel detalle = getDetalle(id_orden);
+        this.id = (int) detalle.getValueAt(0, 0);
+        System.out.println("Modificando detalle: " + toString());
+        // Preparo la consulta
+        String sql = "UPDATE detalle SET\n"
+                + "id_orden= ?,\n"
+                + "id_producto = ?,\n"
+                + "cantidad = ?,\n"
+                + "subtotal = ?\n"
+                + "WHERE detalle.id = ? \n";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, this.id_orden);
+            ps.setInt(2, this.id_producto);
+            ps.setInt(3, this.cantidad);
+            ps.setFloat(4, this.subtotal);
+            ps.setInt(5, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public int registrarDetalle() {
@@ -170,6 +202,11 @@ public class Detalle {
             System.out.println(ex.getMessage());
         }
         return detalles;
+    }
+
+    @Override
+    public String toString() {
+        return "Detalle{" + "id=" + id + ", id_orden=" + id_orden + ", id_producto=" + id_producto + ", cantidad=" + cantidad + ", subtotal=" + subtotal + '}';
     }
 
 }

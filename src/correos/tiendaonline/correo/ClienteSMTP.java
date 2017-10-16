@@ -57,7 +57,7 @@ public class ClienteSMTP {
                 writer.writeBytes(command);
                 reader.readLine();
             }
-
+            System.out.println("Envie MAIL: to=" + toMail + " subject=" + subject + " data:" + content);
             // Cerrar Conexion
             writer.close();
             reader.close();

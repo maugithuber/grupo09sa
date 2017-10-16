@@ -18,7 +18,6 @@ public class TPC {
             "HELP",
             "TRUE",
             "FALSE",
-
             "REGISTRARCLIENTE",
             "REGISTRARPRODUCTO",
             "MODIFICARPRODUCTO",
@@ -27,15 +26,16 @@ public class TPC {
             "MODIFICARCLIENTE",
             "REGISTRARENCARGADO",
             "OBTENERENCARGADOS",
-            "DATOSCLIENTE"
-   
+            "DATOSCLIENTE",
+            "REGISTRARORDEN",
+            "MODIFICARORDEN",
+            "ELIMINARORDEN"
     ));
 
     private static final LinkedList<Token> tokens = new LinkedList<>(Arrays.asList(
             new Token(Token.HELP, -1, "HELP"),
             new Token(Token.TRUE, -1, "TRUE"),
             new Token(Token.FALSE, -1, "FALSE"),
-
             new Token(Token.FUNC, Token.REGISTRARCLIENTE, "REGISTRARCLIENTE"),
             new Token(Token.FUNC, Token.REGISTRARPRODUCTO, "REGISTRARPRODUCTO"),
             new Token(Token.FUNC, Token.MODIFICARPRODUCTO, "MODIFICARPRODUCTO"),
@@ -44,11 +44,10 @@ public class TPC {
             new Token(Token.FUNC, Token.MODIFICARCLIENTE, "MODIFICARCLIENTE"),
             new Token(Token.FUNC, Token.REGISTRARENCARGADO, "REGISTRARENCARGADO"),
             new Token(Token.FUNC, Token.OBTENERENCARGADOS, "OBTENERENCARGADOS"),
-            new Token(Token.FUNC, Token.DATOSCLIENTE, "DATOSCLIENTE")
-            
-            
-            
-            
+            new Token(Token.FUNC, Token.DATOSCLIENTE, "DATOSCLIENTE"),
+            new Token(Token.FUNC, Token.REGISTRARORDEN, "REGISTRARORDEN"),
+            new Token(Token.FUNC, Token.MODIFICARORDEN, "MODIFICARORDEN"),
+            new Token(Token.FUNC, Token.ELIMINARORDEN, "ELIMINARORDEN")
     ));
 
     public static Token estaEnTPC(String lexema) {
