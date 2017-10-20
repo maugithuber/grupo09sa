@@ -55,6 +55,7 @@ public class TPC {
             new Token(Token.FUNC, Token.REGISTRARENCARGADO, "REGISTRARENCARGADO"),
             new Token(Token.FUNC, Token.OBTENERENCARGADOS, "OBTENERENCARGADOS"),
             new Token(Token.FUNC, Token.DATOSCLIENTE, "DATOSCLIENTE"),
+            
             new Token(Token.FUNC, Token.REGISTRARORDEN, "REGISTRARORDEN"),
             new Token(Token.FUNC, Token.MODIFICARORDEN, "MODIFICARORDEN"),
             new Token(Token.FUNC, Token.ELIMINARORDEN, "ELIMINARORDEN"),
