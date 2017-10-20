@@ -78,7 +78,7 @@ public class Helper {
     public static final String HELP_REGISTRARORDEN = "Registrar orden \n"
             + "\n"
             + "El comando permite realizar un pedido de un respectivo producto\n"
-            + "parametros: [id_orden,id_cliente,id_producto,cantidad]";
+            + "parametros: [id_orden,id_cliente,id_zona,id_producto,cantidad]";
     public static final String HELP_MODIFICARORDEN = "Modificar orden \n"
             + "\n"
             + "El comando permite Modificar un pedido de un respectivo producto para una orden especifica\n"

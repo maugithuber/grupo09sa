@@ -200,7 +200,7 @@ public class Zona {
         String sql = "SELECT * FROM usuarios \n"
                 + "WHERE usuarios.email = ? \n"
                 + "and usuarios.password= ? \n"
-                + "and usuarios.tipo = 0";
+                + "and usuarios.tipo = 3";
 
         try {
             // La ejecuto

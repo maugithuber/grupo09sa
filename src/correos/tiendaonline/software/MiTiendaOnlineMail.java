@@ -17,7 +17,6 @@ import correos.tiendaonline.procesador.Parser;
 import correos.tiendaonline.procesador.Token;
 import correos.tiendaonline.software.Negocio.OrdenNegocio;
 import correos.tiendaonline.software.Negocio.ProductoNegocio;
-import correos.tiendaonline.software.Negocio.ReporteNegocio;
 import correos.tiendaonline.software.Negocio.ZonaNegocio;
 import correos.tiendaonline.utils.Helper;
 import correos.tiendaonline.utils.Utils;
@@ -152,7 +151,7 @@ public class MiTiendaOnlineMail {
 
         ZonaNegocio productoNegocio = new ZonaNegocio();
         String message = Utils.dibujarTabla(productoNegocio.obtenerZonas());
-        ClienteSMTP.sendMail(correoDest, "Obtener mas vedido", message);
+        ClienteSMTP.sendMail(correoDest, "Obtener zonas",message);
     }
 
     public void elimiminarzona(AnalizadorLex analex, String correoDest) {
