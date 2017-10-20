@@ -246,5 +246,140 @@ public class Producto {
                 + "precio=" + this.precio + "\n"
                 + "}";
     }
+    
+    
+        public DefaultTableModel getProductomas() {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel producto = new DefaultTableModel();
+        producto.setColumnIdentifiers(new Object[]{
+            "nombre", "total"
+        });
 
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "productos.nombre,\n"
+                + "sum(cantidad*productos.precio)total\n"
+                + "FROM detalle,productos\n"
+                + "WHERE productos.id=detalle.id_producto \n"
+                 + "GROUP BY productos.nombre \n"
+                 + "ORDER BY sum(cantidad*productos.precio) desc \n"
+                + "limit 1";
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                producto.addRow(new Object[]{
+                    rs.getString("nombre"),
+                    rs.getFloat("total")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return producto;
+    }
+        
+     public DefaultTableModel getventasporzonas() {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel ventas = new DefaultTableModel();
+        ventas.setColumnIdentifiers(new Object[]{
+            "nombre", "total"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "zona.nombre,\n"
+                + "sum(total)total\n"
+                + "FROM zona,orden\n"
+                + "WHERE zona.id=orden.id_zona \n"
+                 + "GROUP BY zona.nombre \n";
+ 
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                ventas.addRow(new Object[]{
+                    rs.getString("nombre"),
+                    rs.getFloat("total")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return ventas;
+    }
+
+     
+     
+     
+    public DefaultTableModel getProductomasq() {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel producto = new DefaultTableModel();
+        producto.setColumnIdentifiers(new Object[]{
+            "nombre", "cantidad"
+        });
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "productos.nombre,\n"
+                + "sum(cantidad)cantidad\n"
+                + "FROM detalle,productos\n"
+                + "WHERE productos.id=detalle.id_producto \n"
+                + "GROUP BY productos.nombre \n"
+                + "ORDER BY sum(cantidad*productos.precio) desc \n"
+                + "limit 1";
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                producto.addRow(new Object[]{
+                    rs.getString("nombre"),
+                    rs.getInt("cantidad")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return producto;
+    }
 }

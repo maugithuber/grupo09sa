@@ -32,5 +32,16 @@ public class ProductoNegocio {
         this.m_Producto.setProducto(id,id_categoria, nombre,descripcion,precio);
         this.m_Producto.modificarProducto();
     }
-        
+    
+    public DefaultTableModel obtenerProductomas() {
+        return this.m_Producto.getProductomas();
+    }
+    
+     public DefaultTableModel obtenerProductomasq() {
+        return this.m_Producto.getProductomasq();
+    }
+    
+       public DefaultTableModel obtenerventasporzonas() {
+        return this.m_Producto.getventasporzonas();
+    }
 }

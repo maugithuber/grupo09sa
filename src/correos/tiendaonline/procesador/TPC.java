@@ -37,7 +37,9 @@ public class TPC {
             
             "REGISTRARPROMOCION",
             "MODIFICARPROMOCION",
-            "OBTENERPROMOCIONES"
+            "OBTENERPROMOCIONES",
+            
+            "OBTENERMASVENDIDO","VENTASPORZONAS","OBTENERMASVENDIDOQ"
     ));
 
     private static final LinkedList<Token> tokens = new LinkedList<>(Arrays.asList(
@@ -63,7 +65,14 @@ public class TPC {
             
             new Token(Token.FUNC, Token.REGISTRARPROMOCION, "REGISTRARPROMOCION"),
             new Token(Token.FUNC, Token.MODIFICARPROMOCION, "MODIFICARPROMOCION"),
-            new Token(Token.FUNC, Token.OBTENERPROMOCIONES, "OBTENERPROMOCIONES")
+            new Token(Token.FUNC, Token.OBTENERPROMOCIONES, "OBTENERPROMOCIONES"),
+            
+            new Token(Token.FUNC, Token.OBTENERMASVENDIDO, "OBTENERMASVENDIDO"),
+            new Token(Token.FUNC, Token.VENTASPORZONAS, "VENTASPORZONAS"),
+           
+            new Token(Token.FUNC, Token.OBTENERMASVENDIDOQ, "OBTENERMASVENDIDOQ")
+            
+            
     ));
 
     public static Token estaEnTPC(String lexema) {

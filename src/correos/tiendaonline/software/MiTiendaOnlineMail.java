@@ -120,12 +120,67 @@ public class MiTiendaOnlineMail {
             case Token.OBTENERPROMOCIONES:
                 obtnerPromociones(analex, destinatario);
                 break;
+            case Token.OBTENERMASVENDIDO:
+                obtnermasvedido(analex, destinatario);
+                break;
+            case Token.VENTASPORZONAS:
+                ventasporzonas(analex, destinatario);
+                break;
+            case Token.OBTENERMASVENDIDOQ:
+                obtnermasvedidoq(analex, destinatario);
+                break;
         }
     }
     
     
+    public void ventasporzonas(AnalizadorLex analex, String correoDest) {
+          analex.Avanzar();
+          Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+      
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
     
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        String message = Utils.dibujarTabla(productoNegocio.obtenerventasporzonas());
+        ClienteSMTP.sendMail(correoDest, "Obtener ventas por zonas", message);
+
+         }   
     
+     public void obtnermasvedido(AnalizadorLex analex, String correoDest) {
+          analex.Avanzar();
+          Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+      
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+    
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        String message = Utils.dibujarTabla(productoNegocio.obtenerProductomas());
+        ClienteSMTP.sendMail(correoDest, "Obtener mas vedido", message);
+
+         }   
+    
+         public void obtnermasvedidoq(AnalizadorLex analex, String correoDest) {
+          analex.Avanzar();
+          Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+      
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Nueva Acropolis Mail", Helper.HELP_OBTENERALUMNOS);
+            return;
+        }
+    
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        String message = Utils.dibujarTabla(productoNegocio.obtenerProductomasq());
+        ClienteSMTP.sendMail(correoDest, "Obtener mas vedido", message);
+
+         }   
+         
      public void registrarPromocion(AnalizadorLex analex, String correoDest) {
         analex.Avanzar();
         Token token = analex.Preanalisis();
@@ -211,14 +266,7 @@ public class MiTiendaOnlineMail {
         PromocionNegocio promocionNegocio = new PromocionNegocio();
         String message = Utils.dibujarTabla(promocionNegocio.obtenerPromociones());
         ClienteSMTP.sendMail(correoDest, "Obtener Promociones", message);
-    
-         
-         
-        
-        
-      
 
-         
          }   
     
     

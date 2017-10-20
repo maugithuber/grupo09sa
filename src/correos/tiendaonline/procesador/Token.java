@@ -41,13 +41,19 @@ public class Token {
     public static final int MODIFICARORDEN = 110;
     public static final int ELIMINARORDEN = 111;
     
-   public static final int REGISTRARCATEGORIA =112;
+    public static final int REGISTRARCATEGORIA =112;
     public static final int MODIFICARCATEGORIA =113;
     public static final int OBTENERCATEGORIAS =114;
     
     public static final int REGISTRARPROMOCION =115;
     public static final int MODIFICARPROMOCION  =116;
     public static final int OBTENERPROMOCIONES =117;
+    
+    public static final int OBTENERMASVENDIDO =118;
+    public static final int VENTASPORZONAS =119;
+    public static final int OBTENERMASVENDIDOQ =120;
+      
+      
 
     private int nombre;
     private int atributo;
