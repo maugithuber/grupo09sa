@@ -30,16 +30,19 @@ public class TPC {
             "REGISTRARORDEN",
             "MODIFICARORDEN",
             "ELIMINARORDEN",
-        
             "REGISTRARCATEGORIA",
             "MODIFICARCATEGORIA",
             "OBTENERCATEGORIAS",
-            
             "REGISTRARPROMOCION",
             "MODIFICARPROMOCION",
             "OBTENERPROMOCIONES",
-            
-            "OBTENERMASVENDIDO","VENTASPORZONAS","OBTENERMASVENDIDOQ"
+            "OBTENERMASVENDIDO",
+            "VENTASPORZONAS",
+            "OBTENERMASVENDIDOQ",
+            "REGISTRARZONA",
+            "MODIFICARZONA",
+            "ELIMINARZONA",
+            "OBTENERZONAS"
     ));
 
     private static final LinkedList<Token> tokens = new LinkedList<>(Arrays.asList(
@@ -55,25 +58,22 @@ public class TPC {
             new Token(Token.FUNC, Token.REGISTRARENCARGADO, "REGISTRARENCARGADO"),
             new Token(Token.FUNC, Token.OBTENERENCARGADOS, "OBTENERENCARGADOS"),
             new Token(Token.FUNC, Token.DATOSCLIENTE, "DATOSCLIENTE"),
-            
             new Token(Token.FUNC, Token.REGISTRARORDEN, "REGISTRARORDEN"),
             new Token(Token.FUNC, Token.MODIFICARORDEN, "MODIFICARORDEN"),
             new Token(Token.FUNC, Token.ELIMINARORDEN, "ELIMINARORDEN"),
-            
             new Token(Token.FUNC, Token.REGISTRARCATEGORIA, "REGISTRARCATEGORIA"),
             new Token(Token.FUNC, Token.MODIFICARCATEGORIA, "MODIFICARCATEGORIA"),
             new Token(Token.FUNC, Token.OBTENERCATEGORIAS, "OBTENERCATEGORIAS"),
-            
             new Token(Token.FUNC, Token.REGISTRARPROMOCION, "REGISTRARPROMOCION"),
             new Token(Token.FUNC, Token.MODIFICARPROMOCION, "MODIFICARPROMOCION"),
             new Token(Token.FUNC, Token.OBTENERPROMOCIONES, "OBTENERPROMOCIONES"),
-            
             new Token(Token.FUNC, Token.OBTENERMASVENDIDO, "OBTENERMASVENDIDO"),
             new Token(Token.FUNC, Token.VENTASPORZONAS, "VENTASPORZONAS"),
-           
-            new Token(Token.FUNC, Token.OBTENERMASVENDIDOQ, "OBTENERMASVENDIDOQ")
-            
-            
+            new Token(Token.FUNC, Token.OBTENERMASVENDIDOQ, "OBTENERMASVENDIDOQ"),
+            new Token(Token.FUNC, Token.REGISTRARZONA, "REGISTRARZONA"),
+            new Token(Token.FUNC, Token.MODIFICARZONA, "MODIFICARZONA"),
+            new Token(Token.FUNC, Token.ELIMINARZONA, "ELIMINARZONA"),
+            new Token(Token.FUNC, Token.OBTENERZONAS, "OBTENERZONAS")
     ));
 
     public static Token estaEnTPC(String lexema) {

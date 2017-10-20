@@ -25,7 +25,7 @@ public class CorreosTecno extends javax.swing.JFrame {
 
     public CorreosTecno() {
         initComponents();
-        this.setTitle("Correos Tecno");
+        this.setTitle("CORREOS MI TIENDA EN LINEA");
         this.setLocationRelativeTo(null);
         btnCancelar.setEnabled(false);
     }
@@ -36,17 +36,17 @@ public class CorreosTecno extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            System.out.println("Iniciar Escucha!!!");
+            System.out.println("INICIANDO EN EL SERVIDOR");
             while (estado) {
                 // Preguntar si hay mail
                 String content = ClientePOP.readMail();
                 if (content != null) {
-                    System.out.println("Llego Correo!!!");
+                    System.out.println("Llego Correo");
                     new HiloAtencion(content).start();
                 }
                 waitCiclo();
             }
-            System.out.println("Terminar Escucha!!!");
+            System.out.println("TERMINANDO SESION");
         }
 
         public void waitCiclo() {
@@ -106,19 +106,19 @@ public class CorreosTecno extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(btnIniciar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
-                .addComponent(btnCancelar)
-                .addGap(32, 32, 32))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnIniciar))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIniciar)
-                    .addComponent(btnCancelar))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addComponent(btnIniciar)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
