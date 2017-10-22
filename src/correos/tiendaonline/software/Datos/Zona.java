@@ -224,6 +224,38 @@ public class Zona {
         return false;
     }
 
+    public boolean isUsuario(String email) {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT * FROM usuarios \n"
+                + "WHERE usuarios.email = ? \n";
+               
+                
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            if (rs.getInt(3)==3) {
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+
     public DefaultTableModel getZonas() {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel zonas = new DefaultTableModel();

@@ -40,7 +40,8 @@ public class tester {
       
       ///  m.processMessage("subject:REGISTRARCARRITO [1,1]");
     //  m.processMessage("subject:AGREGARITEM [2,1]");
-        m.processMessage("subject:FINCARRITO");
+    //    m.processMessage("subject:FINCARRITO");
+    m.processMessage("subject:OBTENERPROMOCIONES");
      //   m.processMessage("subject:REGISTRARCARRITO [1,1]");        
      // m.processMessage("subject:REGISTRARPROMOCION [\"todo 5x1\",\"solo los dias martes\",\"10-10-1995\",\"10-10-1996\"]"); 
         // m.processMessage("subject:MODIFICARPROMOCION [2,\"FOR FREE\",\"DE 10 A 11\",\"10-10-2000\",\"10-10-2001\"]"); 
