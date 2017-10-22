@@ -67,7 +67,9 @@ public class Token {
      public static final int ELIMINARENCARGADO = 130;      
      public static final int ELIMINARCATEGORIA = 131;
      public static final int ELIMINARPROMOCION = 132;      
-           
+       
+     public static final int AGREGARITEMP = 133;  
+     public static final int FINPROMOCION = 134;  
 
     private int nombre;
     private int atributo;

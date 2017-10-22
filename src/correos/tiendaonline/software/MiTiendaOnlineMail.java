@@ -166,10 +166,71 @@ public class MiTiendaOnlineMail {
                 break;
            case Token.ELIMINARPROMOCION:
                 eliminarPromocion(analex, destinatario);
-                break;                
+                break;         
+                
+       case Token.AGREGARITEMP:
+                addItemp(analex, destinatario);
+                break;      
+          case Token.FINPROMOCION:
+                finPromocion(analex, destinatario);
+                break;      
                 
                 
         }
+    }
+    
+     public void finPromocion(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mi tienda Online", Helper.HELP_OBTENERZONAS);
+            return;
+        }
+
+        PromocionNegocio promocionNegocio = new PromocionNegocio();
+        
+        
+              String message = Utils.dibujarTablawithHTMLwithoutOpciones(promocionNegocio.obtenerProductos());
+        MimeMail mailer = new MimeMail();
+        try {
+            mailer.sendHtmlEmail(correoDest, "Productos de la promocion", "<h1>Promocion creada satisfactoriamente</h1> \n <h4> Listado de productos de la promocion</4> \n" + message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
+        }
+    }
+     
+     
+        public void addItemp(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARORDEN);
+            return;
+        }
+        PromocionNegocio promocionNegocio = new PromocionNegocio();
+        analex.Avanzar();
+        int id_producto = analex.Preanalisis().getAtributo();
+
+        promocionNegocio.registrarDetalle(id_producto);
+ 
+         
+ 
+        
+         ProductoNegocio productoNegocio = new ProductoNegocio();
+        String message = Utils.dibujarTablawithHTMLwithoutOpciones(productoNegocio.obtenerProductos());
+        MimeMail mailer = new MimeMail();
+        try {
+            mailer.sendHtmlEmail(correoDest, "Agregar Item", "<h1>Item registrado</h1> \n <h4> Elija sus productos</4> \n" + message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
+        }
+   
+
     }
      public void eliminarCategoria(AnalizadorLex analex, String correoDest) {
         analex.Avanzar();
@@ -288,32 +349,22 @@ public class MiTiendaOnlineMail {
     }
 
     public void addItem(AnalizadorLex analex, String correoDest) {
-        // Obtengo el Siguiente token
+  
         analex.Avanzar();
         Token token = analex.Preanalisis();
-        // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
-            // Mostrar ayuda de esa funcionalidad
-            // Enviar correo con la ayuda
             ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARORDEN);
             return;
         }
-        // Sino, ejecutar el comando
         OrdenNegocio ordenNegocio = new OrdenNegocio();
         analex.Avanzar();
-        // Atributos
         int id_producto = analex.Preanalisis().getAtributo();
         analex.Avanzar();
         analex.Avanzar();
         int cantidad = analex.Preanalisis().getAtributo();
+        
         ordenNegocio.registrarDetalle(id_producto, cantidad);
-
-//        ProductoNegocio productoNegocio = new ProductoNegocio();
-//        String message = Utils.dibujarTabla(productoNegocio.obtenerProductos());
-//        ClienteSMTP.sendMail(correoDest, "Listado de productos", message);
         ProductoNegocio productoNegocio = new ProductoNegocio();
-//        String message = Utils.dibujarTabla(productoNegocio.obtenerProductos());
-//        ClienteSMTP.sendMail(correoDest, "Listado de productos",message);
         String message = Utils.dibujarTablawithHTMLwithoutOpciones(productoNegocio.obtenerProductos());
         MimeMail mailer = new MimeMail();
         try {
@@ -559,8 +610,24 @@ public class MiTiendaOnlineMail {
         Date fecha_fin = Utils.convertirFechas(Utils.quitarComillas(analex.Preanalisis().getToStr()));
 
         promocionNegocio.registrarPromocion(nombre, descripcion, fecha_inicio, fecha_fin);
-        ClienteSMTP.sendMail(correoDest, "Registrar Promocion", "Registro realizado Correctamente");
-
+        
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+        
+      
+        String message = Utils.dibujarTablawithHTMLwithoutOpciones(productoNegocio.obtenerProductos());
+        MimeMail mailer = new MimeMail();
+        try {
+            mailer.sendHtmlEmail(correoDest, "Agregar Item", "<h1>Item registrado</h1> \n <h4> Elija sus productos</4> \n" + message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
+        }
+   
+       
+        
+        
+        
     }
 
     public void modificarPromocion(AnalizadorLex analex, String correoDest) {

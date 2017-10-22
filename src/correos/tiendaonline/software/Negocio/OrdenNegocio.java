@@ -56,7 +56,6 @@ public class OrdenNegocio {
          int lastorden= (int) this.m_orden.getLastOrden().getValueAt(0,0);
         this.m_detalle.setDetalle(lastorden, id_producto, cantidad, cantidad * precio);
         return this.m_detalle.registrarDetalle();
-       //return this.m_detalle.registrarDetalle();
     }
 
         public void finCarrito() {

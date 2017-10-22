@@ -170,6 +170,54 @@ public class Producto {
         return productos;
     }
     
+     public DefaultTableModel getProductospromo(int id) {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel productos = new DefaultTableModel();
+        productos.setColumnIdentifiers(new Object[]{
+            "id", "id_categoria", "nombre", "descripcion", "precio"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "productos.id,\n"
+                + "productos.id_categoria,\n"
+                + "productos.nombre,\n"
+                + "productos.descripcion,\n"
+                + "productos.precio\n"
+                + "FROM productos,promocion_detalle \n"
+                + "where productos.id=promocion_detalle.id_producto\n"
+                + "and productos.estado='true'\n"
+                + "and promocion_detalle.id_promocion=?";
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                productos.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getInt("id_categoria"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getFloat("precio")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return productos;
+    }
+    
      public void eliminarProducto() {
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();

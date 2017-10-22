@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package correos.tiendaonline.software.Negocio;
+import correos.tiendaonline.software.Datos.Promocion_detalle;
+import correos.tiendaonline.software.Datos.Producto;
 import java.sql.Date;
 import correos.tiendaonline.software.Datos.Promocion;
 import javax.swing.table.DefaultTableModel;
@@ -14,9 +16,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PromocionNegocio {
        private Promocion m_Promocion;
+       private Promocion_detalle m_productopromo;
+     private Producto m_producto;
      
        public PromocionNegocio() {
         this.m_Promocion = new Promocion();
+        this.m_productopromo = new Promocion_detalle();
+        this.m_producto=new Producto();
     }
 
     public DefaultTableModel obtenerPromocion(int id) {
@@ -45,5 +51,20 @@ public class PromocionNegocio {
               (Date) t.getValueAt(0, 4));
         this.m_Promocion.eliminarPromocion();
     }   
+         
+        public int registrarDetalle(int id_producto) {
+         int lastpromo= (int) this.m_Promocion.getLastPromo().getValueAt(0,0);
+         System.out.println("producto"+id_producto);  
+         System.out.println("promo"+lastpromo);
+         this.m_productopromo.setPromocion_detalle(id_producto,lastpromo);
+         return this.m_productopromo.registrarDetalle();
+    }
+       
+        
+        public DefaultTableModel obtenerProductos() {
+            int lastpromo= (int) this.m_Promocion.getLastPromo().getValueAt(0,0);
+            System.out.println(lastpromo);
+            return this.m_producto.getProductospromo(lastpromo);
+    }
      
 }

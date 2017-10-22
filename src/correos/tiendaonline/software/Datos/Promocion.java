@@ -247,5 +247,33 @@ public class Promocion {
             System.out.println(ex.getMessage());
         }
     }
+ public DefaultTableModel getLastPromo() {
+        DefaultTableModel promo = new DefaultTableModel();
+        promo.setColumnIdentifiers(new Object[]{
+            "id"
+        });
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
 
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "id\n"
+                + "FROM promocion\n"
+                + "ORDER BY id desc \n"
+                + "limit 1";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            this.m_Conexion.cerrarConexion();
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                promo.addRow(new Object[]{
+                    rs.getInt("id")});
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return promo;
+    }
 }

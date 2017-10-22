@@ -72,13 +72,10 @@ public class Orden {
     
     
      public DefaultTableModel getLastOrden() {
-        // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel orden = new DefaultTableModel();
         orden.setColumnIdentifiers(new Object[]{
             "id"
         });
-
-        // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
 
@@ -88,18 +85,10 @@ public class Orden {
                 + "FROM orden\n"
                 + "ORDER BY id desc \n"
                 + "limit 1";
-        
-        // Los simbolos de interrogacion son para mandar parametros 
-        // a la consulta al momento de ejecutalas
-
         try {
-            // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
-            // Cierro la conexion
             this.m_Conexion.cerrarConexion();
-
             // Recorro el resultado
             while (rs.next()) {
                 // Agrego las tuplas a mi tabla
@@ -111,6 +100,8 @@ public class Orden {
         }
         return orden;
     }
+     
+     
     public DefaultTableModel getOrden(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel orden = new DefaultTableModel();

@@ -51,7 +51,9 @@ public class TPC {
             "ELIMINARCLIENTE",
             "ELIMINARENCARGADO",
             "ELIMINARCATEGORIA",
-            "ELIMINARPROMOCION"
+            "ELIMINARPROMOCION",
+            "AGREGARITEMP",
+            "FINPROMOCION"
     ));
 
     private static final LinkedList<Token> tokens = new LinkedList<>(Arrays.asList(
@@ -91,7 +93,10 @@ public class TPC {
             new Token(Token.FUNC, Token.ELIMINARCLIENTE, "ELIMINARCLIENTE"),
             new Token(Token.FUNC, Token.ELIMINARENCARGADO, "ELIMINARENCARGADO"),
             new Token(Token.FUNC, Token.ELIMINARCATEGORIA, "ELIMINARCATEGORIA"),
-             new Token(Token.FUNC, Token.ELIMINARPROMOCION, "ELIMINARPROMOCION")
+             new Token(Token.FUNC, Token.ELIMINARPROMOCION, "ELIMINARPROMOCION"),
+            
+            new Token(Token.FUNC, Token.AGREGARITEMP, "AGREGARITEMP"),
+             new Token(Token.FUNC, Token.FINPROMOCION, "FINPROMOCION")
     ));
 
     public static Token estaEnTPC(String lexema) {
