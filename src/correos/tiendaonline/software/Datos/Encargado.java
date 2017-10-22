@@ -95,7 +95,9 @@ public class Encargado {
          + "persona.nombre,\n"
          + "persona.apellido\n"
          + "FROM encargado,persona\n"
-         + "WHERE encargado.id_persona=persona.id";
+         + "WHERE encargado.id_persona=persona.id\n"
+         + "AND encargado.estado='true'";
+
 
         try {
             // La ejecuto
@@ -156,6 +158,27 @@ public class Encargado {
         }
         return 0;
     }
-    
+     public void eliminarEncargado() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "UPDATE encargado SET\n"
+                + "estado = ?\n"
+                + "WHERE encargado.id = ?";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1,false);
+            ps.setInt(2, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
  
 }

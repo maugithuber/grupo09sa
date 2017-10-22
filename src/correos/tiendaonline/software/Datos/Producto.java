@@ -18,7 +18,8 @@ public class Producto {
     String foto1, foto2, video;
     float precio;
     Conexion m_Conexion;
-
+    boolean estado;
+    
     public Producto() {
         this.m_Conexion = Conexion.getInstancia();
     }
@@ -76,7 +77,7 @@ public class Producto {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel producto = new DefaultTableModel();
         producto.setColumnIdentifiers(new Object[]{
-            "id", "id_categoria", "nombre", "descripcion", "precio"
+            "id", "id_categoria", "nombre", "descripcion","foto1", "precio"
         });
 
         // Abro y obtengo la conexion
@@ -89,9 +90,10 @@ public class Producto {
                 + "productos.id_categoria,\n"
                 + "productos.nombre,\n"
                 + "productos.descripcion,\n"
+                + "productos.foto1,\n"
                 + "productos.precio\n"
-                + "FROM productos\n"
-                + "WHERE productos.id=?";
+                + "FROM productos \n"
+                + "WHERE productos.id= ?";
         // Los simbolos de interrogacion son para mandar parametros 
         // a la consulta al momento de ejecutalas
 
@@ -112,7 +114,9 @@ public class Producto {
                     rs.getInt("id_categoria"),
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
+                    rs.getString("foto1"),
                     rs.getFloat("precio")
+                
                 });
             }
         } catch (SQLException ex) {
@@ -138,7 +142,8 @@ public class Producto {
                 + "productos.nombre,\n"
                 + "productos.descripcion,\n"
                 + "productos.precio\n"
-                + "FROM productos";
+                + "FROM productos \n"
+                + "WHERE productos.estado='true'";
 
         try {
             // La ejecuto
@@ -164,6 +169,31 @@ public class Producto {
         }
         return productos;
     }
+    
+     public void eliminarProducto() {
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+                String sql = "UPDATE productos SET \n"
+                + "estado = ? \n"
+                + "WHERE productos.id = ?";
+        try {
+            System.out.println("Eliminar producto" + toString());
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setBoolean(1, false);
+            ps.setInt(2, this.id);
+            
+            int rows = ps.executeUpdate();
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        
+        
+    }
+
 
     public int registrarProducto() {
         // Abro y obtengo la conexion

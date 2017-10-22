@@ -43,6 +43,12 @@ public class EncargadoNegocio {
         this.m_user.registrarUser();
         return this.m_Encargado.registrarEncargado();
     }
-
+      public void eliminarEncargado(int id) {
+       DefaultTableModel t= this.m_Encargado.getEncargado(id);
+       this.m_Encargado.setEncargado(id,(int)t.getValueAt(0, 1));
+        this.m_Encargado.eliminarEncargado();
+    }  
   
+      
+
 }

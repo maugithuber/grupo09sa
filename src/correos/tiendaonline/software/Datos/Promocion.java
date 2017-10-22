@@ -125,7 +125,9 @@ public class Promocion {
                 + "promocion.descripcion,\n"
                 + "promocion.fecha_inicio,\n"
                 + "promocion.fecha_fin\n"
-                + "FROM promocion\n";
+                + "FROM promocion\n"
+               + "WHERE promocion.estado='true'";
+
 
         try {
             // La ejecuto
@@ -223,5 +225,27 @@ public class Promocion {
     }
 
     
+ public void eliminarPromocion() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "UPDATE promocion SET\n"
+                + "estado = ?\n"
+                + "WHERE promocion.id = ?";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1,false);
+            ps.setInt(2, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
 }

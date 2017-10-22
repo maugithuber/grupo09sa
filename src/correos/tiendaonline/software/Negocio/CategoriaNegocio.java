@@ -33,6 +33,12 @@ public class CategoriaNegocio {
         this.m_Categoria.modificarCategoria();
     }
         
-     
+          public void eliminarCategoria(int id) {
+     DefaultTableModel t= this.m_Categoria.getCategoria(id);
+       this.m_Categoria.setCategoria(id,
+               (String)t.getValueAt(0, 1),
+               (String)t.getValueAt(0, 2));
+        this.m_Categoria.eliminarCategoria();
+    }  
      
 }

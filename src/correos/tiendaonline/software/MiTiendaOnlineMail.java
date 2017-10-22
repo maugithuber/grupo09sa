@@ -151,9 +151,105 @@ public class MiTiendaOnlineMail {
             case Token.FINCARRITO:
                 end(analex, destinatario);
                 break;
-
+                
+            case Token.ELIMINARPRODUCTO:
+                eliminarProducto(analex, destinatario);
+                break;
+            case Token.ELIMINARCLIENTE:
+                eliminarCliente(analex, destinatario);
+                break;         
+            case Token.ELIMINARENCARGADO:
+                eliminarEncargado(analex, destinatario);
+                break;
+           case Token.ELIMINARCATEGORIA:
+                eliminarCategoria(analex, destinatario);
+                break;
+           case Token.ELIMINARPROMOCION:
+                eliminarPromocion(analex, destinatario);
+                break;                
+                
+                
         }
     }
+     public void eliminarCategoria(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_ELIMINARORDEN);
+            return;
+        }
+        CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+         analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+
+        categoriaNegocio.eliminarCategoria(id);
+        ClienteSMTP.sendMail(correoDest, "Categoria eliminado", "Categoria eliminado correctamente");
+    }
+     
+     public void eliminarPromocion(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_ELIMINARORDEN);
+            return;
+        }
+        PromocionNegocio promocionNegocio = new PromocionNegocio();
+         analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+//        DefaultTableModel producto = productoNegocio.obtenerProducto(id);
+
+        promocionNegocio.eliminarPromocion(id);
+        ClienteSMTP.sendMail(correoDest, "Producto eliminado", "Producto eliminado correctamente");
+    }
+
+   public void eliminarProducto(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_ELIMINARORDEN);
+            return;
+        }
+        ProductoNegocio productoNegocio = new ProductoNegocio();
+         analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+//        DefaultTableModel producto = productoNegocio.obtenerProducto(id);
+
+        productoNegocio.eliminarProducto(id);
+        ClienteSMTP.sendMail(correoDest, "Producto eliminado", "Producto eliminado correctamente");
+    }
+   
+      public void eliminarCliente(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_ELIMINARORDEN);
+            return;
+        }
+        ClienteNegocio clienteNegocio = new ClienteNegocio();
+         analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+        DefaultTableModel cliente = clienteNegocio.obtenerCliente(id);
+
+        clienteNegocio.eliminarCliente(id);
+        ClienteSMTP.sendMail(correoDest, "Cliente eliminado", "Cliente eliminado correctamente");
+    }
+      
+       public void eliminarEncargado(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_ELIMINARORDEN);
+            return;
+        }
+       EncargadoNegocio encargadoNegocio = new EncargadoNegocio();
+         analex.Avanzar();
+        int id = analex.Preanalisis().getAtributo();
+     
+
+        encargadoNegocio.eliminarEncargado(id);
+        ClienteSMTP.sendMail(correoDest, "Encargado eliminado", "Eliminado eliminado correctamente");
+    }
+
 
     public void registrarCarrito(AnalizadorLex analex, String correoDest) {
         // Obtengo el Siguiente token
@@ -822,7 +918,6 @@ public class MiTiendaOnlineMail {
         // Obtengo el Siguiente token
         analex.Avanzar();
         Token token = analex.Preanalisis();
-
         // Reviso si no es ayuda
         if (token.getNombre() == Token.HELP) {
             // Mostrar ayuda de esa funcionalidad
@@ -830,7 +925,6 @@ public class MiTiendaOnlineMail {
             ClienteSMTP.sendMail(correoDest, "Ayudas - Mi tienda Online", Helper.HELP_OBTENERPRODUCTOS);
             return;
         }
-
         // Sino, ejecutar el comando
         ProductoNegocio productoNegocio = new ProductoNegocio();
 //        String message = Utils.dibujarTabla(productoNegocio.obtenerProductos());
@@ -844,7 +938,6 @@ public class MiTiendaOnlineMail {
             System.out.println("Failed to sent email.");
             ex.printStackTrace();
         }
-
     }
 
     public void modificarCliente(AnalizadorLex analex, String correoDest) {

@@ -59,7 +59,6 @@ public class Zona {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
-
         // Preparo la consulta
         String sql = "INSERT INTO zona(\n"
                 + "id_encargado,nombre,ubicacion)\n"

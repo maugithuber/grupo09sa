@@ -58,10 +58,16 @@ public class Token {
     public static final int ELIMINARZONA = 123;
     public static final int OBTENERZONAS = 124;
    
-        public static final int REGISTRARCARRITO = 125;
+     public static final int REGISTRARCARRITO = 125;
      public static final int AGREGARITEM = 126;
-      public static final int FINCARRITO = 127;
-        
+     public static final int FINCARRITO = 127;
+      
+     public static final int ELIMINARPRODUCTO = 128;
+     public static final int ELIMINARCLIENTE = 129;
+     public static final int ELIMINARENCARGADO = 130;      
+     public static final int ELIMINARCATEGORIA = 131;
+     public static final int ELIMINARPROMOCION = 132;      
+           
 
     private int nombre;
     private int atributo;

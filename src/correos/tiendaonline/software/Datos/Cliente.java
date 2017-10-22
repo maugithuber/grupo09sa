@@ -117,6 +117,55 @@ public class Cliente {
         return cliente;
     }
 
+    public DefaultTableModel getCliente2(int id) {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel cliente = new DefaultTableModel();
+        cliente.setColumnIdentifiers(new Object[]{
+            "id", "telefono", "direccion", "id_persona"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "clientes.id,\n"
+                + "clientes.telefono,\n"
+                + "clientes.direccion,\n"
+                + "clientes.id_persona\n"
+                + "FROM clientes\n"
+                 + "WHERE clientes.id= ?";
+         
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                cliente.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getString("telefono"),
+                    rs.getString("direccion"),
+                    rs.getInt("id_persona")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return cliente;
+    }
+    
+    
     public DefaultTableModel getClientes() {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel clientes = new DefaultTableModel();
@@ -204,6 +253,30 @@ public class Cliente {
         return 0;
     }
     
+            
+            
+    public void eliminarCliente() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "UPDATE clientes SET\n"
+                + "estado = ?\n"
+                + "WHERE clientes.id = ?";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1,false);
+            ps.setInt(2, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
      public void modificarCliente() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -228,6 +301,9 @@ public class Cliente {
             System.out.println(ex.getMessage());
         }
     }
+     
+     
+
 
      
      

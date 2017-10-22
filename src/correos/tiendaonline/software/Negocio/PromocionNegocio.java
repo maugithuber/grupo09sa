@@ -37,6 +37,13 @@ public class PromocionNegocio {
         this.m_Promocion.modificarPromocion();
     }
         
-     
+         public void eliminarPromocion(int id) {
+     DefaultTableModel t= this.m_Promocion.getPromocion(id);
+       this.m_Promocion.setPromocion(id,(String)t.getValueAt(0, 1)
+               ,(String)t.getValueAt(0, 2),
+               (Date)t.getValueAt(0, 3),
+              (Date) t.getValueAt(0, 4));
+        this.m_Promocion.eliminarPromocion();
+    }   
      
 }

@@ -105,7 +105,8 @@ public class Categoria {
                 + "categoria.id,\n"
                 + "categoria.nombre,\n"
                 + "categoria.descripcion\n"
-                + "FROM categoria";
+                + "FROM categoria\n"
+                + "WHERE categoria.estado='true'";
 
         try {
             // La ejecuto
@@ -194,6 +195,27 @@ public class Categoria {
         }
     }
 
+ public void eliminarCategoria() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
 
+        // Preparo la consulta
+        String sql = "UPDATE categoria SET\n"
+                + "estado = ?\n"
+                + "WHERE categoria.id = ?";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1,false);
+            ps.setInt(2, this.id);
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
 }

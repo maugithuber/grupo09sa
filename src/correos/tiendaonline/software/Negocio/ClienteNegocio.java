@@ -44,5 +44,14 @@ public class ClienteNegocio {
          this.m_Cliente.setCliente(id,telefono ,direccion );
           this.m_Cliente.modificarCliente();
     }
+    
+      public void eliminarCliente(int id) {
+       DefaultTableModel t= this.m_Cliente.getCliente2(id);
+       this.m_Cliente.setCliente(id,
+               (String)t.getValueAt(0, 1)
+               ,(String)t.getValueAt(0, 2),
+              (int) t.getValueAt(0, 3));
+        this.m_Cliente.eliminarCliente();
+    }  
   
 }

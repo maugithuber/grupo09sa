@@ -44,4 +44,15 @@ public class ProductoNegocio {
        public DefaultTableModel obtenerventasporzonas() {
         return this.m_Producto.getventasporzonas();
     }
+       
+     public void eliminarProducto(int id) {
+     DefaultTableModel t= this.m_Producto.getProducto(id);
+       this.m_Producto.setProducto(id,(int)t.getValueAt(0, 1)
+               ,(String)t.getValueAt(0, 2),
+               (String)t.getValueAt(0, 3),
+              (String) t.getValueAt(0, 4),
+              (float) t.getValueAt(0, 5));
+        this.m_Producto.eliminarProducto();
+    }  
+       
 }
