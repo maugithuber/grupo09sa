@@ -57,6 +57,11 @@ public class Token {
     public static final int MODIFICARZONA = 122;
     public static final int ELIMINARZONA = 123;
     public static final int OBTENERZONAS = 124;
+   
+        public static final int REGISTRARCARRITO = 125;
+     public static final int AGREGARITEM = 126;
+      public static final int FINCARRITO = 127;
+        
 
     private int nombre;
     private int atributo;

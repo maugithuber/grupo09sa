@@ -37,6 +37,17 @@ public class Orden {
         java.util.Date utilDate = new java.util.Date();
         this.fecha = new java.sql.Date(utilDate.getTime());
     }
+    
+    
+        public void setOrden(int id_cliente, int id_zona) {
+        this.id_cliente = id_cliente;
+        this.id_zona = id_zona;
+        this.total = 0;
+        // para el calendario
+        java.util.Date utilDate = new java.util.Date();
+        this.fecha = new java.sql.Date(utilDate.getTime());
+    }
+    
 
     public void setId(int id) {
         this.id = id;
@@ -58,6 +69,48 @@ public class Orden {
         this.fecha = fecha;
     }
 
+    
+    
+     public DefaultTableModel getLastOrden() {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel orden = new DefaultTableModel();
+        orden.setColumnIdentifiers(new Object[]{
+            "id"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "id\n"
+                + "FROM orden\n"
+                + "ORDER BY id desc \n"
+                + "limit 1";
+        
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                orden.addRow(new Object[]{
+                    rs.getInt("id")});
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return orden;
+    }
     public DefaultTableModel getOrden(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel orden = new DefaultTableModel();
@@ -149,6 +202,8 @@ public class Orden {
         return ordenes;
     }
 
+    
+    
     public int registrarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -156,19 +211,18 @@ public class Orden {
 
         // Preparo la consulta
         String sql = "INSERT INTO orden(\n"
-                + "id,id_zona,id_cliente,total,fecha)\n"
-                + "VALUES(?,?,?,?,?)";
+                + "id_zona,id_cliente,total,fecha)\n"
+                + "VALUES(?,?,?,?)";
 
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // El segundo parametro de usa cuando se tienen tablas que generan llaves primarias
             // es bueno cuando nuestra bd tiene las primarias autoincrementables
-            ps.setInt(1, this.id);
-            ps.setInt(2, this.id_zona);
-            ps.setInt(3, this.id_cliente);
-            ps.setFloat(4, this.total);
-            ps.setDate(5, this.fecha);
+            ps.setInt(1, this.id_zona);
+            ps.setInt(2, this.id_cliente);
+            ps.setFloat(3, this.total);
+            ps.setDate(4, this.fecha);
 
             int rows = ps.executeUpdate();
 
@@ -188,6 +242,34 @@ public class Orden {
         return 0;
     }
 
+    public void endCarrito() {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "UPDATE orden SET\n"
+                + "total= ?,\n"
+                + "WHERE orden.id = ? \n"
+                + "and orden.id_cliente =?";
+        try {
+            System.out.println("Modificando orden" + toString());
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setFloat(1, this.total);
+            ps.setInt(2, this.id);
+          
+
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    
     public void modificarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -216,7 +298,8 @@ public class Orden {
             System.out.println(ex.getMessage());
         }
     }
-
+      
+    
     public void EliminarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();

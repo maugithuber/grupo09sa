@@ -35,7 +35,6 @@ public class Detalle {
     }
 
     public void setDetalle(int id_orden, int id_producto, int cantidad, float subtotal) {
-
         this.id_orden = id_orden;
         this.id_producto = id_producto;
         this.cantidad = cantidad;
@@ -160,6 +159,74 @@ public class Detalle {
         }
         return 0;
     }
+    
+    public DefaultTableModel getsuma(int id_orden) {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel detalles = new DefaultTableModel();
+        detalles.setColumnIdentifiers(new Object[]{
+            "total"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "sum(subtotal)total\n"
+                + "FROM detalle\n"
+                + "WHERE detalle.id_orden = ? \n"
+                ;
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id_orden);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                detalles.addRow(new Object[]{
+                    rs.getFloat("total"),});
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return detalles;
+    }
+    
+    
+    
+    public void endCarrito(float suma,int id_orden) {
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+        /// Obtengo el id del detalle a partir de la orden
+//        DefaultTableModel detalle = getDetalle(id_orden);
+//        this.id = (int) detalle.getValueAt(0, 0);
+        System.out.println("Modificando orden: " + toString());
+        // Preparo la consulta
+        String sql = "UPDATE orden SET\n"
+                + "total= ?\n"
+                + "WHERE orden.id = ? \n";
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setFloat(1, suma);
+            ps.setInt(2, id_orden);
+      
+            int rows = ps.executeUpdate();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
 
     public DefaultTableModel getDetalles() {
         // Tabla para mostrar lo obtenido de la consulta

@@ -24,12 +24,12 @@ public class ProductoNegocio {
         return this.m_Producto.getProductos();
     }
 
-    public int registrarProducto(int id_categoria,String nombre, String descripcion,float precio) {
-        this.m_Producto.setProducto(id_categoria, nombre,descripcion,precio);
+    public int registrarProducto(int id_categoria,String nombre, String descripcion,String foto1,float precio) {
+        this.m_Producto.setProducto(id_categoria, nombre,descripcion,foto1,precio);
         return this.m_Producto.registrarProducto();
     }
-    public void modificarProducto(int id, int id_categoria, String nombre, String descripcion,float precio) {
-        this.m_Producto.setProducto(id,id_categoria, nombre,descripcion,precio);
+    public void modificarProducto(int id, int id_categoria, String nombre, String descripcion,String foto1,float precio) {
+        this.m_Producto.setProducto(id,id_categoria, nombre,descripcion,foto1,precio);
         this.m_Producto.modificarProducto();
     }
     

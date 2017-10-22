@@ -15,7 +15,7 @@ public class Producto {
 
     int id, id_categoria;
     String nombre, descripcion;
-    byte[] foto1, foto2, video;
+    String foto1, foto2, video;
     float precio;
     Conexion m_Conexion;
 
@@ -23,18 +23,20 @@ public class Producto {
         this.m_Conexion = Conexion.getInstancia();
     }
 
-    public void setProducto(int id, int id_categoria, String nombre, String descripcion, float precio) {
+    public void setProducto(int id, int id_categoria, String nombre, String descripcion,String foto1, float precio) {
         this.id = id;
         this.id_categoria = id_categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.foto1=foto1;
         this.precio = precio;
     }
 
-    public void setProducto(int id_categoria, String nombre, String descripcion, float precio) {
+    public void setProducto(int id_categoria, String nombre, String descripcion,String foto1, float precio) {
         this.id_categoria = id_categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.foto1=foto1;
         this.precio = precio;
     }
 
@@ -54,15 +56,15 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public void setFoto1(byte[] foto1) {
+    public void setFoto1(String foto1) {
         this.foto1 = foto1;
     }
 
-    public void setFoto2(byte[] foto2) {
+    public void setFoto2(String foto2) {
         this.foto2 = foto2;
     }
 
-    public void setVideo(byte[] video) {
+    public void setVideo(String video) {
         this.video = video;
     }
 
@@ -170,8 +172,8 @@ public class Producto {
 
         // Preparo la consulta
         String sql = "INSERT INTO productos(\n"
-                + "nombre,descripcion,id_categoria,precio)\n"
-                + "VALUES(?,?,?,?)";
+                + "nombre,descripcion,id_categoria,foto1,precio)\n"
+                + "VALUES(?,?,?,?,?)";
 
         try {
             // La ejecuto
@@ -184,7 +186,8 @@ public class Producto {
             // ps.setBytes(4, this.foto2);
             // ps.setBytes(5, this.video);
             ps.setInt(3, this.id_categoria);
-            ps.setFloat(4, this.precio);
+            ps.setString(4, this.foto1);
+            ps.setFloat(5, this.precio);
 
             int rows = ps.executeUpdate();
 
@@ -214,6 +217,7 @@ public class Producto {
                 + "nombre = ?,\n"
                 + "descripcion = ?,\n"
                 + "id_categoria = ?,\n"
+                + "foto1 = ?,\n"
                 + "precio = ? \n"
                 + "WHERE productos.id = ?";
         System.out.println(sql);
@@ -225,8 +229,9 @@ public class Producto {
             ps.setString(1, this.nombre);
             ps.setString(2, this.descripcion);
             ps.setInt(3, this.id_categoria);
-            ps.setFloat(4, this.precio);
-            ps.setInt(5, this.id);
+            ps.setString(4, this.foto1);
+            ps.setFloat(5, this.precio);
+            ps.setInt(6, this.id);
             int rows = ps.executeUpdate();
 
             // Cierro la conexion

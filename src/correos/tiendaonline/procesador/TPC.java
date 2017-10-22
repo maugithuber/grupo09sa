@@ -42,7 +42,10 @@ public class TPC {
             "REGISTRARZONA",
             "MODIFICARZONA",
             "ELIMINARZONA",
-            "OBTENERZONAS"
+            "OBTENERZONAS",
+            "REGISTRARCARRITO",
+            "AGREGARITEM",
+            "FINCARRITO"
     ));
 
     private static final LinkedList<Token> tokens = new LinkedList<>(Arrays.asList(
@@ -53,7 +56,7 @@ public class TPC {
             new Token(Token.FUNC, Token.REGISTRARPRODUCTO, "REGISTRARPRODUCTO"),
             new Token(Token.FUNC, Token.MODIFICARPRODUCTO, "MODIFICARPRODUCTO"),
             new Token(Token.FUNC, Token.OBTENERPRODUCTOS, "OBTENERPRODUCTOS"),
-            new Token(Token.FUNC, Token.OBTENERPRODUCTOS, "OBTENERCLIENTES"),
+            new Token(Token.FUNC, Token.OBTENERCLIENTES, "OBTENERCLIENTES"),
             new Token(Token.FUNC, Token.MODIFICARCLIENTE, "MODIFICARCLIENTE"),
             new Token(Token.FUNC, Token.REGISTRARENCARGADO, "REGISTRARENCARGADO"),
             new Token(Token.FUNC, Token.OBTENERENCARGADOS, "OBTENERENCARGADOS"),
@@ -73,7 +76,10 @@ public class TPC {
             new Token(Token.FUNC, Token.REGISTRARZONA, "REGISTRARZONA"),
             new Token(Token.FUNC, Token.MODIFICARZONA, "MODIFICARZONA"),
             new Token(Token.FUNC, Token.ELIMINARZONA, "ELIMINARZONA"),
-            new Token(Token.FUNC, Token.OBTENERZONAS, "OBTENERZONAS")
+            new Token(Token.FUNC, Token.OBTENERZONAS, "OBTENERZONAS"),
+            new Token(Token.FUNC, Token.REGISTRARCARRITO, "REGISTRARCARRITO"),
+            new Token(Token.FUNC, Token.AGREGARITEM, "AGREGARITEM"),
+            new Token(Token.FUNC, Token.FINCARRITO, "FINCARRITO")
     ));
 
     public static Token estaEnTPC(String lexema) {
