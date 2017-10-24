@@ -42,7 +42,49 @@ public class Persona {
     }
     
  
-    
+    public DefaultTableModel getultimapersona() {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel persona = new DefaultTableModel();
+        persona.setColumnIdentifiers(new Object[]{
+            "id"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        
+        
+        String sql = "SELECT\n"
+                + "persona.id\n"
+                + "FROM persona\n"
+                + "ORDER BY id desc \n"
+                + "limit 1";
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                persona.addRow(new Object[]{
+                    rs.getInt("id"),
+
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return persona;
+    }
     
      public DefaultTableModel getCliente(int id) {
         // Tabla para mostrar lo obtenido de la consulta

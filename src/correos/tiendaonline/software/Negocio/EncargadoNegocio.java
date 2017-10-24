@@ -50,5 +50,17 @@ public class EncargadoNegocio {
     }  
   
       
-
+     public int registrarEncargado2(String nombre, String apellido, String email, String pass) {
+        // No olvidar primero settear los datos
+       int id_persona = (int) this.m_persona.getultimapersona().getValueAt(0, 0);
+       id_persona++;
+        System.out.println(id_persona);
+        this.m_persona.setPersona(id_persona, nombre, apellido);
+        this.m_Encargado.setEncargado(id_persona,id_persona);
+        this.m_user.setUser(id_persona,2, id_persona, email, pass);
+        
+        this.m_persona.registrarPersona();
+        this.m_user.registrarUser();
+         return this.m_Encargado.registrarEncargado();
+    }
 }

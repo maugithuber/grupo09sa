@@ -33,7 +33,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
-        public void setUser(int tipo, int id_persona, String email, String password) {
+
+    public void setUser(int tipo, int id_persona, String email, String password) {
         this.tipo = tipo;
         this.id_persona = id_persona;
         this.email = email;
@@ -64,7 +65,7 @@ public class User {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel usuario = new DefaultTableModel();
         usuario.setColumnIdentifiers(new Object[]{
-              "id", "tipo", "id_persona","email","password"
+            "id", "tipo", "id_persona", "email", "password"
         });
 
         // Abro y obtengo la conexion
@@ -73,7 +74,7 @@ public class User {
 
         // Preparo la consulta
         String sql = "SELECT\n"
-                  + "users.id,\n"
+                + "users.id,\n"
                 + "usuarios.tipo,\n"
                 + "usuarios.id_persona,\n"
                 + "usuarios.email,\n"
@@ -113,7 +114,7 @@ public class User {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel users = new DefaultTableModel();
         users.setColumnIdentifiers(new Object[]{
-            "id", "tipo", "id_persona","email","password"
+            "id", "tipo", "id_persona", "email", "password"
         });
 
         // Abro y obtengo la conexion
@@ -172,7 +173,7 @@ public class User {
             ps.setInt(3, this.id_persona);
             ps.setInt(4, this.tipo);
             ps.setString(5, this.password);
-           
+
             int rows = ps.executeUpdate();
 
             // Cierro Conexion
@@ -191,4 +192,46 @@ public class User {
         return 0;
     }
 
+    public DefaultTableModel getTipoUsuario(String email) {
+        // Tabla para mostrar lo obtenido de la consulta
+        DefaultTableModel usuario = new DefaultTableModel();
+        usuario.setColumnIdentifiers(new Object[]{
+            "tipo"
+        });
+
+        // Abro y obtengo la conexion
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "usuarios.tipo \n"
+                + "FROM usuarios "
+                + "WHERE usuarios.email=?";
+        // Los simbolos de interrogacion son para mandar parametros 
+        // a la consulta al momento de ejecutalas
+
+        try {
+            // La ejecuto
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            // Cierro la conexion
+            this.m_Conexion.cerrarConexion();
+
+            // Recorro el resultado
+            // Agrego las tuplas a mi tabla
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                usuario.addRow(new Object[]{
+                    rs.getInt("tipo"),
+                });
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return usuario;
+    }
 }

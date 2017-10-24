@@ -40,6 +40,19 @@ public class ClienteNegocio {
         this.m_user.registrarUser();
         return this.m_Cliente.registrarCliente();
     }
+     public int registrarCliente2(String nombre, String apellido, String email, String pass, String telefono, String direccion) {
+        // No olvidar primero settear los datos
+       int id_persona = (int) this.m_persona.getultimapersona().getValueAt(0, 0);
+       id_persona++;
+         System.out.println(id_persona);
+        this.m_persona.setPersona(id_persona, nombre, apellido);
+        this.m_Cliente.setCliente(id_persona,telefono, direccion, id_persona);
+        this.m_user.setUser(id_persona,1, id_persona, email, pass);
+        
+        this.m_persona.registrarPersona();
+        this.m_user.registrarUser();
+        return this.m_Cliente.registrarCliente();
+    }
     public void modificarCliente(int id, String telefono , String direccion) {
          this.m_Cliente.setCliente(id,telefono ,direccion );
           this.m_Cliente.modificarCliente();

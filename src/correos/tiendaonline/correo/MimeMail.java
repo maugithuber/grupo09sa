@@ -51,7 +51,7 @@ public class MimeMail {
             msg.setSentDate(new Date());
             // set plain text message
             msg.setContent(message, "text/html");
-            System.out.println("Envie MAIL: to=" + toAddress + " subject=" + subject + " data:" + message);
+            //System.out.println("Envie MAIL: to=" + toAddress + " subject=" + subject + " data:" + message);
             // sends the e-mail
             Transport.send(msg);
         } catch (MessagingException mex) {

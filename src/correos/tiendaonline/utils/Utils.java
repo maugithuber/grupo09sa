@@ -117,31 +117,13 @@ public class Utils {
         int len = texto.length() - 1;
         return texto.substring(1, len);
     }
-    
-    
-     public static String dibujarTablawithHTMLwithoutOpciones(DefaultTableModel tabla) {
+
+    public static String dibujarTablawithHTMLwithoutOpciones(DefaultTableModel tabla) {
         String tableString = "";
         tableString += "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<head>\n"
                 + "<style>\n"
-                + ".button {\n"
-                + "    background-color: #4CAF50; /* Green */\n"
-                + "    border: none;\n"
-                + "    color: white;\n"
-                + "    padding: 15px 32px;\n"
-                + "    text-align: center;\n"
-                + "    text-decoration: none;\n"
-                + "    display: inline-block;\n"
-                + "    font-size: 16px;\n"
-                + "    margin: 4px 2px;\n"
-                + "    cursor: pointer;\n"
-                + "}\n"
-                + "\n"
-                + ".button2 {background-color: #008CBA;} /* Blue */\n"
-                + ".button3 {background-color: #f44336;} /* Red */ \n"
-                + ".button4 {background-color: #e7e7e7; color: black;} /* Gray */ \n"
-                + ".button5 {background-color: #555555;} /* Black */"
                 + "table {\n"
                 + "    border-collapse: collapse;\n"
                 + "    width: 100%;\n"
@@ -261,7 +243,8 @@ public class Utils {
                         + "</td> \n";
             }
             //<a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=ELIMINAR\"><button class=\"button button3\">ELIMINAR</button></a>
-            tableString += "<td><a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=MODIFICAR\"> <button class=\"button button5\">MODIFICAR</button>  </td> \n";
+            tableString += "<td><a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=MODIFICAR\"> <button class=\"button button5\">MODIFICAR</button>  "
+                    + "<a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=ELIMINAR\"> <button class=\"button button3\">ELIMINAR</button> </td> \n";
 
             tableString += "</tr> \n";
 
@@ -278,6 +261,5 @@ public class Utils {
 
         return tableString;
     }
-    
-    
+
 }

@@ -37,9 +37,8 @@ public class Orden {
         java.util.Date utilDate = new java.util.Date();
         this.fecha = new java.sql.Date(utilDate.getTime());
     }
-    
-    
-        public void setOrden(int id_cliente, int id_zona) {
+
+    public void setOrden(int id_cliente, int id_zona) {
         this.id_cliente = id_cliente;
         this.id_zona = id_zona;
         this.total = 0;
@@ -47,7 +46,6 @@ public class Orden {
         java.util.Date utilDate = new java.util.Date();
         this.fecha = new java.sql.Date(utilDate.getTime());
     }
-    
 
     public void setId(int id) {
         this.id = id;
@@ -69,9 +67,7 @@ public class Orden {
         this.fecha = fecha;
     }
 
-    
-    
-     public DefaultTableModel getLastOrden() {
+    public DefaultTableModel getLastOrden() {
         DefaultTableModel orden = new DefaultTableModel();
         orden.setColumnIdentifiers(new Object[]{
             "id"
@@ -100,8 +96,92 @@ public class Orden {
         }
         return orden;
     }
-     
-     
+
+    public DefaultTableModel getLastOrdenTotal() {
+        DefaultTableModel orden = new DefaultTableModel();
+        orden.setColumnIdentifiers(new Object[]{
+            "idOrden", "Cliente", "Zona", "total", "fecha"
+        });
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "orden.id,\n"
+                + "persona.nombre as nombre,\n"
+                + "zona.nombre as zona,\n"
+                + "orden.total, orden.fecha \n"
+                + "FROM orden,zona,persona,clientes\n"
+                + "WHERE orden.id_zona=zona.id and clientes.id=orden.id_cliente and persona.id= clientes.id_persona \n"
+                + "ORDER BY orden.id desc \n"
+                + "limit 1";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            this.m_Conexion.cerrarConexion();
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                orden.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getString("nombre"),
+                    rs.getString("zona"),
+                    rs.getFloat("total"),
+                    rs.getString("fecha")
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return orden;
+    }
+
+    public DefaultTableModel getProductosLastOrdenTotal() {
+        DefaultTableModel orden = new DefaultTableModel();
+        orden.setColumnIdentifiers(new Object[]{
+            "id_producto", "cantidad", "PrecioPagado", "subtotal", "nombre", "descripcion", "foto"
+        });
+        this.m_Conexion.abrirConexion();
+        Connection con = this.m_Conexion.getConexion();
+
+        // Preparo la consulta
+        String sql = "SELECT\n"
+                + "productos.id,\n"
+                + "detalle.cantidad, \n"
+                + "productos.precio, \n"
+                + "detalle.subtotal,\n"
+                + "productos.nombre,\n"
+                + "productos.descripcion,\n"
+                + "productos.foto1\n"
+                + "FROM orden,productos,detalle\n"
+                + "WHERE orden.id=detalle.id_orden and productos.id=detalle.id_producto and orden.id=?"
+                + "ORDER BY id desc \n";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, (int) getLastOrden().getValueAt(0, 0));
+            ResultSet rs = ps.executeQuery();
+            this.m_Conexion.cerrarConexion();
+            // Recorro el resultado
+            while (rs.next()) {
+                // Agrego las tuplas a mi tabla
+                orden.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getInt("cantidad"),
+                    rs.getFloat("precio"),
+                    rs.getFloat("subtotal"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getString("foto1")
+
+                });
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return orden;
+    }
+
     public DefaultTableModel getOrden(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel orden = new DefaultTableModel();
@@ -193,8 +273,6 @@ public class Orden {
         return ordenes;
     }
 
-    
-    
     public int registrarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -249,7 +327,6 @@ public class Orden {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setFloat(1, this.total);
             ps.setInt(2, this.id);
-          
 
             int rows = ps.executeUpdate();
 
@@ -259,8 +336,7 @@ public class Orden {
             System.out.println(ex.getMessage());
         }
     }
-    
-    
+
     public void modificarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -289,8 +365,7 @@ public class Orden {
             System.out.println(ex.getMessage());
         }
     }
-      
-    
+
     public void EliminarOrden() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();

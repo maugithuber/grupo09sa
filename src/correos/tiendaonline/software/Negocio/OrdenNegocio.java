@@ -45,29 +45,31 @@ public class OrdenNegocio {
         return this.m_detalle.registrarDetalle();
 
     }
-      public int registrarCarrito(int id_cliente, int id_zona) {
- 
+
+    public int registrarCarrito(int id_cliente, int id_zona) {
+
         this.m_orden.setOrden(id_cliente, id_zona);
         return this.m_orden.registrarOrden();
-       //return this.m_detalle.registrarDetalle();
+        //return this.m_detalle.registrarDetalle();
     }
-      public int registrarDetalle(int id_producto, int cantidad) {
-         float precio = obtenerPrecioProducto(id_producto);
-         int lastorden= (int) this.m_orden.getLastOrden().getValueAt(0,0);
+
+    public int registrarDetalle(int id_producto, int cantidad) {
+        float precio = obtenerPrecioProducto(id_producto);
+        int lastorden = (int) this.m_orden.getLastOrden().getValueAt(0, 0);
         this.m_detalle.setDetalle(lastorden, id_producto, cantidad, cantidad * precio);
         return this.m_detalle.registrarDetalle();
     }
 
-        public void finCarrito() {
-        int lastorden= (int) this.m_orden.getLastOrden().getValueAt(0,0);
-        float suma= (float)m_detalle.getsuma(lastorden).getValueAt(0,0);
-        this.m_detalle.endCarrito(suma,lastorden);
+    public void finCarrito() {
+        int lastorden = (int) this.m_orden.getLastOrden().getValueAt(0, 0);
+        float suma = (float) m_detalle.getsuma(lastorden).getValueAt(0, 0);
+        this.m_detalle.endCarrito(suma, lastorden);
     }
-      
-      protected float obtenerPrecioProducto(int id_producto) {
+
+    protected float obtenerPrecioProducto(int id_producto) {
         ProductoNegocio producto = new ProductoNegocio();
         DefaultTableModel modelo = producto.obtenerProducto(id_producto);
-        float precio = ((float) modelo.getValueAt(0, 4));
+        float precio = ((float) modelo.getValueAt(0, 5));
         return precio;
     }
 
@@ -84,5 +86,12 @@ public class OrdenNegocio {
     public void eliminarOrden(int id_orden, int id_cliente) {
         this.m_orden.setOrden(id_orden, id_cliente, 0, 0); // a los 2 ultimos les doy el valor de 0 por oque no los necesito
         this.m_orden.EliminarOrden();
+    }
+
+    public DefaultTableModel ultimaOrden() {
+        return this.m_orden.getLastOrdenTotal();
+    }
+    public DefaultTableModel ultimaOrdenProductos() {
+        return this.m_orden.getProductosLastOrdenTotal();
     }
 }

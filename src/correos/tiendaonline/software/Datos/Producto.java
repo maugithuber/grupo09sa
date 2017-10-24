@@ -129,7 +129,7 @@ public class Producto {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel productos = new DefaultTableModel();
         productos.setColumnIdentifiers(new Object[]{
-            "id", "id_categoria", "nombre", "descripcion", "precio"
+            "id", "id_categoria", "nombre", "descripcion", "precio","foto1"
         });
 
         // Abro y obtengo la conexion
@@ -141,7 +141,8 @@ public class Producto {
                 + "productos.id_categoria,\n"
                 + "productos.nombre,\n"
                 + "productos.descripcion,\n"
-                + "productos.precio\n"
+                + "productos.precio, \n"
+                + "productos.foto1\n"
                 + "FROM productos \n"
                 + "WHERE productos.estado='true'";
 
@@ -161,7 +162,8 @@ public class Producto {
                     rs.getInt("id_categoria"),
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
-                    rs.getFloat("precio")
+                    rs.getFloat("precio"),
+                    rs.getString("foto1")
                 });
             }
         } catch (SQLException ex) {

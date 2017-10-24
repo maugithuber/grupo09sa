@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package correos.tiendaonline.software.Datos;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,18 +12,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Mauricio
  */
 public class Promocion {
+
     int id;
-    String nombre,descripcion;
-    Date fecha_inicio,fecha_fin;
+    String nombre, descripcion;
+    Date fecha_inicio, fecha_fin;
     Conexion m_Conexion;
 
     public Promocion() {
-      this.m_Conexion = Conexion.getInstancia();
+        this.m_Conexion = Conexion.getInstancia();
     }
 
     public void setPromocion(int id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin) {
@@ -32,7 +35,8 @@ public class Promocion {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
     }
-     public void setPromocion(String nombre, String descripcion, Date fecha_inicio, Date fecha_fin) {
+
+    public void setPromocion(String nombre, String descripcion, Date fecha_inicio, Date fecha_fin) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha_inicio = fecha_inicio;
@@ -58,12 +62,12 @@ public class Promocion {
     public void setFecha_fin(Date fecha_fin) {
         this.fecha_fin = fecha_fin;
     }
-    
-      public DefaultTableModel getPromocion(int id) {
+
+    public DefaultTableModel getPromocion(int id) {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel promocion = new DefaultTableModel();
         promocion.setColumnIdentifiers(new Object[]{
-            "id", "nombre", "descripcion", "fecha_inicio","fecha_fin"
+            "id", "nombre", "descripcion", "fecha_inicio", "fecha_fin"
         });
 
         // Abro y obtengo la conexion
@@ -95,7 +99,7 @@ public class Promocion {
             while (rs.next()) {
                 // Agrego las tuplas a mi tabla
                 promocion.addRow(new Object[]{
-                rs.getInt("id"),
+                    rs.getInt("id"),
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
                     rs.getDate("fecha_inicio"),
@@ -112,7 +116,7 @@ public class Promocion {
         // Tabla para mostrar lo obtenido de la consulta
         DefaultTableModel zonas = new DefaultTableModel();
         zonas.setColumnIdentifiers(new Object[]{
-              "id", "id_encargado", "nombre", "ubicacion"
+            "id", "nombre", "descripcion", "fechaInicio", "fechaFin", "duracion"
         });
 
         // Abro y obtengo la conexion
@@ -124,10 +128,10 @@ public class Promocion {
                 + "promocion.nombre,\n"
                 + "promocion.descripcion,\n"
                 + "promocion.fecha_inicio,\n"
-                + "promocion.fecha_fin\n"
+                + "promocion.fecha_fin,\n"
+                + "(promocion.fecha_fin- promocion.fecha_inicio ) as duracion\n"
                 + "FROM promocion\n"
-               + "WHERE promocion.estado='true'";
-
+                + "WHERE promocion.estado='true'";
 
         try {
             // La ejecuto
@@ -145,7 +149,9 @@ public class Promocion {
                     rs.getString("nombre"),
                     rs.getString("descripcion"),
                     rs.getDate("fecha_inicio"),
-                    rs.getDate("fecha_fin")
+                    rs.getDate("fecha_fin"),
+                    rs.getString("duracion")
+
                 });
             }
         } catch (SQLException ex) {
@@ -153,8 +159,7 @@ public class Promocion {
         }
         return zonas;
     }
-    
-        
+
     public int registrarPromocion() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
@@ -224,8 +229,7 @@ public class Promocion {
         }
     }
 
-    
- public void eliminarPromocion() {
+    public void eliminarPromocion() {
         // Abro y obtengo la conexion
         this.m_Conexion.abrirConexion();
         Connection con = this.m_Conexion.getConexion();
@@ -237,7 +241,7 @@ public class Promocion {
         try {
             // La ejecuto
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setBoolean(1,false);
+            ps.setBoolean(1, false);
             ps.setInt(2, this.id);
             int rows = ps.executeUpdate();
 
@@ -247,7 +251,8 @@ public class Promocion {
             System.out.println(ex.getMessage());
         }
     }
- public DefaultTableModel getLastPromo() {
+
+    public DefaultTableModel getLastPromo() {
         DefaultTableModel promo = new DefaultTableModel();
         promo.setColumnIdentifiers(new Object[]{
             "id"
