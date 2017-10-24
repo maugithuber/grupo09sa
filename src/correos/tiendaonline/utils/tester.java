@@ -46,8 +46,8 @@ public class tester {
 
 //    m.processMessage("subject:REGISTRARPROMOCION [\"50% de descuento\",\"todos los martes\"]");
      //   m.processMessage("subject:REGISTRARCARRITO [1,1]");        
-      m.processMessage("subject:REGISTRARPROMOCION [\"todo 2x1\",\"solo los dias martes\",\"10-10-1995\",\"10-10-1996\"]"); 
-     m.processMessage("subject:AGREGARITEMP [3]");
+    //  m.processMessage("subject:REGISTRARPROMOCION [\"todo 2x1\",\"solo los dias martes\",\"10-10-1995\",\"10-10-1996\"]"); 
+     m.processMessage("subject:DATOSPROMOCION [1]");
     // m.processMessage("subject:FINCARRITO");
     
 // m.processMessage("subject:MODIFICARPROMOCION [2,\"FOR FREE\",\"DE 10 A 11\",\"10-10-2000\",\"10-10-2001\"]"); 

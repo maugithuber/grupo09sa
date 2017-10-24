@@ -131,15 +131,15 @@ public class MiTiendaOnlineMail {
                 obtnermasvedidoq(analex, destinatario);
                 break;
             case Token.REGISTRARZONA:
-                registrarzona(analex, destinatario);
+                registrarzona2(analex, destinatario);
                 break;
 
             case Token.MODIFICARZONA:
-                modificarzona(analex, destinatario);
+                modificarzona2(analex, destinatario);
                 break;
 
             case Token.ELIMINARZONA:
-                elimiminarzona(analex, destinatario);
+                elimiminarzona2(analex, destinatario);
                 break;
             case Token.OBTENERZONAS:
                 obtenerzonas(analex, destinatario);
@@ -176,7 +176,37 @@ public class MiTiendaOnlineMail {
             case Token.FINPROMOCION:
                 finPromocion(analex, destinatario);
                 break;
+          case Token.DATOSPROMOCION:
+                datosPromocion(analex, destinatario);
+                break;
 
+        }
+    }
+    
+ public void datosPromocion(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mi tienda Online", Helper.HELP_FINPROMOCION);
+            return;
+        }
+
+        PromocionNegocio promocionNegocio = new PromocionNegocio();
+        
+       analex.Avanzar();
+        int id_promo = analex.Preanalisis().getAtributo();
+
+      
+     
+        String message = Utils.dibujarTablawithHTMLwithoutOpciones(promocionNegocio.obtenerProductospromo(id_promo));
+        MimeMail mailer = new MimeMail();
+        try {
+            mailer.sendHtmlEmail(correoDest, "Productos de la promocion "+id_promo, "<h1>Productos de la Promocion</h1> \n <h4> Listado de productos de la promocion</4> \n" + message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
         }
     }
 
@@ -190,7 +220,6 @@ public class MiTiendaOnlineMail {
         }
 
         PromocionNegocio promocionNegocio = new PromocionNegocio();
-
         String message = Utils.dibujarTablawithHTMLwithoutOpciones(promocionNegocio.obtenerProductos());
         MimeMail mailer = new MimeMail();
         try {
@@ -463,6 +492,22 @@ public class MiTiendaOnlineMail {
         zonaNegocio.eliminarzona(id);
         ClienteSMTP.sendMail(correoDest, "ELIMINAR   ZONA", "ELIMINACION REALIZADA CORRECTAMENTE");
     }
+    public void elimiminarzona2(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARZONA);
+            return;
+        }
+        ZonaNegocio zonaNegocio = new ZonaNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        zonaNegocio.eliminarzona(id);
+        ClienteSMTP.sendMail(correoDest, "ELIMINAR   ZONA", "ELIMINACION REALIZADA CORRECTAMENTE");
+    }
 
     public void modificarzona(AnalizadorLex analex, String correoDest) {
 // Obtengo el Siguiente token
@@ -498,6 +543,32 @@ public class MiTiendaOnlineMail {
 //        float precio = analex.Preanalisis().getAtributo();
 //        analex.Avanzar();
 //        analex.Avanzar();
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String ubicacion = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        zonaNegocio.modificarZona(id, id_encargado, nombre, ubicacion);
+        ClienteSMTP.sendMail(correoDest, "MODIFICAR ZONA", "MODIFICACION realizado Correctamente");
+    }
+     public void modificarzona2(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+
+        if (token.getNombre() == Token.HELP) {
+
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARZONA);
+            return;
+        }
+
+        ZonaNegocio zonaNegocio = new ZonaNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        int id_encargado = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
         String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
         analex.Avanzar();
         analex.Avanzar();
@@ -545,7 +616,27 @@ public class MiTiendaOnlineMail {
         ClienteSMTP.sendMail(correoDest, "REGISTRAR ZONA", "Registro realizado Correctamente");
 
     }
+    public void registrarzona2(AnalizadorLex analex, String correoDest) {
+        analex.Avanzar();
+        Token token = analex.Preanalisis();
+        if (token.getNombre() == Token.HELP) {
+            ClienteSMTP.sendMail(correoDest, "Ayudas - Mitiendaonline Mail", Helper.HELP_REGISTRARZONA);
+            return;
+        }
+        ZonaNegocio zonaNegocio = new ZonaNegocio();
+        analex.Avanzar();
+        // Atributos
+        int id_encargado = analex.Preanalisis().getAtributo();
+        analex.Avanzar();
+        analex.Avanzar();
+        String nombre = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        analex.Avanzar();
+        analex.Avanzar();
+        String ubicacion = Utils.quitarComillas(analex.Preanalisis().getToStr());
+        zonaNegocio.registrarZona(id_encargado, nombre, ubicacion);
+        ClienteSMTP.sendMail(correoDest, "REGISTRAR ZONA", "Registro realizado Correctamente");
 
+    }
     public void ventasporzonas(AnalizadorLex analex, String correoDest) {
         analex.Avanzar();
         Token token = analex.Preanalisis();

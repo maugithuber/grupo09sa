@@ -63,8 +63,11 @@ public class PromocionNegocio {
         
         public DefaultTableModel obtenerProductos() {
             int lastpromo= (int) this.m_Promocion.getLastPromo().getValueAt(0,0);
-            System.out.println(lastpromo);
             return this.m_producto.getProductospromo(lastpromo);
+    }
+        
+       public DefaultTableModel obtenerProductospromo(int id_promo) {
+            return this.m_producto.getProductospromo(id_promo);
     }
      
 }

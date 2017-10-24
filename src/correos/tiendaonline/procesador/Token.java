@@ -70,7 +70,9 @@ public class Token {
        
      public static final int AGREGARITEMP = 133;  
      public static final int FINPROMOCION = 134;  
-
+     public static final int DATOSPROMOCION = 135; 
+     
+     
     private int nombre;
     private int atributo;
     private String toStr;
