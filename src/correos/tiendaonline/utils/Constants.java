@@ -12,7 +12,7 @@ package correos.tiendaonline.utils;
 public class Constants {
 
     // Mail Server Vars
-    public static final String MAIL_SERVER_HOST = "mail.ficct.uagrm.edu.bo";
+    public static final String MAIL_SERVER_HOST = "200.87.51.3";
     public static final String MAIL_USER = "grupo09sa";
     public static final String MAIL_PASSWORD = "grupo09grupo09";
     public static final String MAIL_USERMAIL = "grupo09sa@ficct.uagrm.edu.bo";

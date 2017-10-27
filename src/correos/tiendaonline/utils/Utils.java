@@ -60,6 +60,77 @@ public class Utils {
         return destinatario;
     }
 
+    public static String dibujarTablaProductos(DefaultTableModel tabla) {
+        String tableString = "";
+        tableString += "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "<style>\n"
+                + "table {\n"
+                + "    border-collapse: collapse;\n"
+                + "    width: 100%;\n"
+                + "}\n"
+                + "\n"
+                + "th, td {\n"
+                + "    text-align: left;\n"
+                + "    padding: 8px;\n"
+                + "}\n"
+                + "\n"
+                + "tr:nth-child(even){background-color: #f2f2f2}\n"
+                + "\n"
+                + "th {\n"
+                + "    background-color: #4CAF50;\n"
+                + "    color: white;\n"
+                + "}\n"
+                + "</style>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "<div class=\"w3-container\">\n"
+                + "\n"
+                + "  <table class=\"w3-table-all\">\n"
+                + "    <thead>\n"
+                + "<tr class=\"w3-red\">\n";
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            tableString += "<th>" + (tabla.getColumnName(i)) + "</th> \n";
+        }
+//        tableString += "<th> Opciones </th> \n";
+        tableString += "</tr> \n"
+                + "</thead> \n";
+
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            tableString += "<tr> \n";
+            for (int j = 0; j < tabla.getColumnCount(); j++) {
+                if (j == 5) { // foto 
+                    tableString += "<td>"
+                            + "<img  height=\"50\" width=\"100\" src=\" " + (String.valueOf(tabla.getValueAt(i, j))) + " \" alt=\"500\" />"
+                            + "</td> \n";
+                } else {
+                    tableString += "<td>"
+                            + (String.valueOf(tabla.getValueAt(i, j)))
+                            + "</td> \n";
+                }
+
+            }
+            //<a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=ELIMINAR\"><button class=\"button button3\">ELIMINAR</button></a>
+
+            //tableString += "<td><a href=\"mailto:" + Constants.MAIL_USERMAIL + "?subject=MODIFICAR\"> <button class=\"button button5\">MODIFICAR</button>  </td> \n";
+            tableString += "</tr> \n";
+
+        }
+
+        if (tabla.getRowCount() < 1) {
+            return "(Tabla Vacia)";
+        }
+        tableString += "</table>\n"
+                + "</div>\n"
+                + "\n"
+                + "</body>\n"
+                + "</html> ";
+
+        return tableString;
+    }
+    
+    
     public static String getSubjectOrden(String contenido) {
         String orden = "";
         // Dividir en lineas
